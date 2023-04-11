@@ -3,7 +3,7 @@ import { WeatherService } from '../service/weather.service';
 import { OpenWeather5 } from '../model/open-weather.interface';
 
 @Component({
-  selector: 'app-weather-five-day',
+  selector: 'weather-five-day',
   templateUrl: './weather-five-day.component.html',
   styleUrls: ['./weather-five-day.component.css']
 })

@@ -12,18 +12,7 @@ export class WeatherService {
     private http: HttpClient
   ) { }
 
-  getWeatherInitService(lat: number, lon: number): Observable<any> {
-    return this.http.get(
-      "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=129fe5173bd0c4c830ba6e766b567567"
-    )
-  }
-
-  getWeatherService(searchCity: string, units: string): Observable<any> {
-    return this.http.get(
-      "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=129fe5173bd0c4c830ba6e766b567567&units=" + units
-    )
-  }
-
+  // cautarea latitudinii / longitudinii actuale
   getLocationService(): Promise<any> {
     return new Promise((res, error) => {
       navigator.geolocation.getCurrentPosition(data => {
@@ -32,6 +21,21 @@ export class WeatherService {
     })
   }
 
+  // cautarea orasului in functie de latitudine/ longitudine
+  getWeatherInitService(lat: number, lon: number): Observable<any> {
+    return this.http.get(
+      "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=129fe5173bd0c4c830ba6e766b567567"
+    )
+  }
+
+  // importarea datelor despre vreme (1 zi)
+  getWeatherService(searchCity: string, units: string): Observable<any> {
+    return this.http.get(
+      "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=129fe5173bd0c4c830ba6e766b567567&units=" + units
+    )
+  }
+  
+  // importarea datelor despre vreme (5 zile / 3 h)
   get5DaysWeatherService() {
     return this.http.get(
       "https://api.openweathermap.org/data/2.5/forecast?q=Deva&appid=129fe5173bd0c4c830ba6e766b567567&units=metric"

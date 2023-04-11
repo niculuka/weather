@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid black;
+}
+
+button {
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    width: 400px;
+    height: 200px;
+    margin: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 10px;
+}
+
+button:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+@media(max-width: 1000px) {
+    .container {
+        flex-direction: column;
+    }
+
+    button {
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 450px) {    
+    button {
+        width: 90%;
+        font-size: 16px;
+    }
+
+}

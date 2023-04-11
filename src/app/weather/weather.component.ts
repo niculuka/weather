@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../service/weather.service';
-import { OpenWeather, OpenWeather5 } from 'src/app/model/open-weather.interface';
+import { OpenWeather } from 'src/app/model/open-weather.interface';
 
 @Component({
   selector: 'app-weather',
@@ -9,13 +9,15 @@ import { OpenWeather, OpenWeather5 } from 'src/app/model/open-weather.interface'
 })
 export class WeatherComponent implements OnInit {
 
+  image: string = "assets/images/day.jpg"
+
   myWeather: OpenWeather = new OpenWeather();
   searchCity: string = "";  
 
   constructor(private weatherService: WeatherService) { }
 
   ngOnInit(): void {
-    // this.getLocation();
+    this.getLocation();
   }
 
   onSubmit() {
