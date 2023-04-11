@@ -1,0 +1,46 @@
+<button routerLink="/5days">5days</button>
+
+<div class="container" [ngStyle]="{'background-image': 'url(/' + myWeather.image + ')'}">
+    <div class="cards">
+        <!-- <img [src]="myWeather.day" alt="">
+        <img [src]="myWeather.night" alt=""> -->
+
+        <div class="search">
+            <form #form="ngForm" (submit)="onSubmit()">
+                <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
+            </form>
+        </div>
+
+
+        <div class="card">
+            <div>
+                <h1>{{myWeather.currentCity}}</h1>
+                <div class="temp">{{myWeather.temperature | number: "1.0-0"}}° {{myWeather.units=="imperial" ? "F" :
+                    "C"}}</div>
+                <img src={{myWeather.iconURL}} alt={{myWeather.iconURL}}>
+                <p class="title">{{myWeather.summary}}</p>
+            </div>
+            <hr>
+            <div>
+                <!-- <p class="title">Summary: {{myWeather.summary}}</p> -->
+                <p class="title">Feels like: {{myWeather.feelsLike | number: "1.0-0"}}° {{myWeather.units=="imperial" ?
+                    "F" : "C"}}</p>
+                <p class="title">Presure: {{myWeather.pressure}} hPa</p>
+                <p class="title">Humidity: {{myWeather.humidity}} %</p>
+            </div>
+            <div>
+                <form class="temperature">
+                    <div class="form-group">
+                        <input type="radio" (change)="onUnitChange()" name="unit"
+                            [checked]="myWeather.units=='metric' ? true : false">
+                        <label for="celsius">°C</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" (change)="onUnitChange()" name="unit">
+                        <label for="fahrenheit">°F</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

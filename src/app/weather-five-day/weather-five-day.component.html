@@ -1,0 +1,28 @@
+<h1>{{myWeather5.city.name}}</h1>
+
+<div class="cards">
+
+    <div class="card" *ngFor="let list of myWeather5.list">
+
+        <div class="time">{{list.dt_txt}}</div>
+
+        <div class="temperature">{{list.main?.temp | number: "1.0-0"}}° C</div>
+        <div class="main" *ngFor="let item of list.weather">
+            <img src="https://openweathermap.org/img/wn/{{item.icon}}@2x.png" alt="icon">
+            <p>{{item.main}}</p>
+        </div>
+
+        <div class="details">
+            <div>Humidity: {{list.main?.humidity}} %</div>
+            <div>Pressure: {{list.main?.pressure}} hPa</div>
+            <div class="max-min">
+                <div>Max/Min: {{list.main?.temp_max | number: "1.0-0"}} / {{list.main?.temp_min | number: "1.0-0"}}° C
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
