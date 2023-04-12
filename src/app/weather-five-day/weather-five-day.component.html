@@ -1,29 +1,46 @@
-<button routerLink="/">Back</button>
+<div class="container" [ngStyle]="{'background-image': 'url(/' + myWeather5.backgroundImage + ')'}">
 
-<h1>{{myWeather5.city.name}}</h1>
+    <div class="back">
+        <button routerLink="/">Back</button>
+    </div>
 
-<div class="cards">
+    <div class="content">
 
-    <div class="card" *ngFor="let list of myWeather5.list">
-
-        <div class="time">{{list.dt_txt}}</div>
-
-        <div class="temperature">{{list.main?.temp | number: "1.0-0"}}° C</div>
-        <div class="main" *ngFor="let item of list.weather">
-            <img src="https://openweathermap.org/img/wn/{{item.icon}}@2x.png" alt="icon">
-            <p>{{item.main}}</p>
+        <div class="search">
+            <form #form="ngForm" (submit)="onSubmit()">
+                <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
+                <img src="/assets/images/search.svg" alt="search.jpg" (click)="onSubmit()">
+            </form>
         </div>
 
-        <div class="details">
-            <div>Humidity: {{list.main?.humidity}} %</div>
-            <div>Pressure: {{list.main?.pressure}} hPa</div>
-            <div class="max-min">
-                <div>Max/Min: {{list.main?.temp_max | number: "1.0-0"}} / {{list.main?.temp_min | number: "1.0-0"}}° C
+        <h1 class="city" *ngIf="myWeather5.city.name">{{myWeather5.city.name}}</h1>
+
+        <div class="cards" *ngIf="myWeather5.city.name">
+
+            <div class="card" *ngFor="let list of myWeather5.list">
+
+                <div class="time">{{list.dt_txt}}</div>
+
+                <div class="temperature">{{list.main?.temp | number: "1.0-0"}}° C</div>
+                <div class="main" *ngFor="let item of list.weather">
+                    <img src="https://openweathermap.org/img/wn/{{item.icon}}@2x.png" alt="icon">
+                    <p>{{item.main}}</p>
                 </div>
+
+                <div class="details">
+                    <div>Humidity: {{list.main?.humidity}} %</div>
+                    <div>Pressure: {{list.main?.pressure}} hPa</div>
+                    <div class="max-min">
+                        <div>
+                            Max/Min: {{list.main?.temp_max | number: "1.0-0"}}° / {{list.main?.temp_min | number:
+                            "1.0-0"}}° C
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
         </div>
-
-
 
     </div>
 

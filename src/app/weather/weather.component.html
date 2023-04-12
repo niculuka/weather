@@ -1,4 +1,4 @@
-<div class="container" [ngStyle]="{'background-image': 'url(/' + image + ')'}">
+<div class="container" [ngStyle]="{'background-image': 'url(/' + myWeather.backgroundImage + ')'}">
 
     <div class="back">
         <button routerLink="/">Back</button>
@@ -14,7 +14,7 @@
         </div>
 
 
-        <div class="card">
+        <div class="card" *ngIf="myWeather.currentCity">
             <div>
                 <h1>{{myWeather.currentCity}}</h1>
                 <div class="temperature">

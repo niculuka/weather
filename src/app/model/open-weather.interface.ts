@@ -12,15 +12,26 @@ export class OpenWeather {
 
     lat: number = 0;
     lon: number = 0;
-
-    image: string = "assets/images/day.jpg";
+    
     day: string = "day";
     night: string = "night";
     rain: string = "";
-    iconURL: string = "";
+    iconCode: string = "01d";
+    iconURL: string = "";    
+    backgroundImage: string = "assets/images/day.jpg";
 }
 
 export class OpenWeather5 {
+    localCity: string = "";
+    currentCity: string = "";
+    lastCity: string = "";
+
+    lat: number = 0;
+    lon: number = 0;
+
+    iconCode: string = "01d";
+    backgroundImage: string = "assets/images/day.jpg";
+
     city = {
         name: "",
     };

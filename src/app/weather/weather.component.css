@@ -12,6 +12,7 @@
 
 .back {
     width: 100%;
+    max-width: 1500px;
 }
 
 button {
@@ -63,8 +64,8 @@ button:hover {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    min-width: 400px;
-    margin-top: 20px;
+    margin: 20px;
+    padding: 0 80px;
     color: white;
     background: rgba(0, 0, 0, 0.3);
     box-shadow: 0px 6px 10px 0px rgba(62, 62, 62, 0.2);
@@ -88,6 +89,7 @@ button:hover {
 .temperature {
     font-size: 50px;
     font-weight: 900;
+    text-align: center;
     /* border: 2px solid red; */
 }
 
@@ -135,3 +137,4 @@ hr {
 .form-group label {
     font-size: 30px;
 }
+
