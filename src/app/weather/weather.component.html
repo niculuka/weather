@@ -38,12 +38,40 @@
                     <input type="radio" (change)="onUnitChange()" name="unit"
                         [checked]="myWeather.units=='metric' ? true : false">
                     <label for="celsius">°C</label>
-                </div>                
+                </div>
                 <div class="form-group">
                     <input type="radio" (change)="onUnitChange()" name="unit">
                     <label for="fahrenheit">°F</label>
                 </div>
             </form>
+        </div>
+
+        <div class="favorite" *ngIf="myWeather.currentCity">
+            <table>
+                <tr>
+                    <td colspan="6">--- under construction ---</td>
+                </tr>
+                <tr *ngFor="let item of favoritesItems; index as ind">
+
+                    <td>{{ind+1}}</td>
+                    <td (click)="goToCity(item)">
+                        {{item.currentCity}}
+                    </td>
+                    <td>
+                        {{item.temperature | number: "1.0-0"}}° C
+                    </td>
+                    <td>
+                        {{item.summary}}
+                    </td>                    
+                    <td>
+                        {{item.humidity}}%
+                    </td>
+                    <td>
+                        {{item.pressure}} hPa
+                    </td>
+
+                </tr>
+            </table>
         </div>
     </div>
 

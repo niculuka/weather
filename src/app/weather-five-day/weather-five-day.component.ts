@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../service/weather.service';
-import { OpenWeather5 } from '../model/open-weather.interface';
+import { OpenWeather5 } from '../model/open-weather.model';
 
 @Component({
   selector: 'weather-five-day',
@@ -100,7 +100,7 @@ export class WeatherFiveDayComponent implements OnInit {
       default:
         this.myWeather5.backgroundImage = "assets/images/day.jpg";
     }
-    console.log(this.myWeather5.iconCode)
+    // console.log(this.myWeather5.iconCode)
   }
 
 }

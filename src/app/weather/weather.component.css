@@ -138,3 +138,92 @@ hr {
     font-size: 30px;
 }
 
+.favorite {
+    color: white;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 10px 0px rgba(62, 62, 62, 0.2);
+    border-radius: 20px;
+}
+
+table {
+    border-collapse: collapse;
+  }
+
+tr {
+    cursor: pointer;
+    border-bottom: 1px solid white;
+}
+
+td {
+    padding: 10px;
+}
+
+@media(max-width: 1040px) {
+    .search input {
+        font-size: 15px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    .card {
+        padding: 0 60px;
+    }
+
+    .card h1 {
+        font-size: 36px;
+    }
+
+    .temperature {
+        font-size: 46px;
+    }
+
+    .summary {
+        font-size: 26px;
+    }
+
+    .details {
+        font-size: 20px;
+    }
+
+    .form-group label {
+        font-size: 26px;
+    }
+}
+
+@media(max-width: 550px) {
+    button {
+        font-size: 14px;
+    }
+
+    .search input {
+        font-size: 14px;
+    }
+
+    .card {
+        padding: 0 40px;
+    }
+
+    .card h1 {
+        font-size: 32px;
+    }
+
+    .temperature {
+        font-size: 42px;
+    }
+
+    .summary {
+        font-size: 22px;
+    }
+
+    .details {
+        font-size: 18px;
+    }
+
+    .form-group label {
+        font-size: 22px;
+    }
+}
+

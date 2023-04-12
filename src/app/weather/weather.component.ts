@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../service/weather.service';
-import { OpenWeather } from 'src/app/model/open-weather.interface';
+import { OpenWeather } from 'src/app/model/open-weather.model';
+import { FAVOTITE_DATA, Favorite } from '../model/favorite.model';
+import { FavoriteService } from '../service/favorite.service';
 
 @Component({
   selector: 'app-weather',
@@ -12,12 +14,19 @@ export class WeatherComponent implements OnInit {
   myWeather: OpenWeather = new OpenWeather();
   searchCity: string = "";
 
-  constructor(private weatherService: WeatherService) { }
+  favorite: Favorite = new Favorite();
+  favoritesItems: Array<Favorite> = FAVOTITE_DATA;  
+
+  constructor(
+    private weatherService: WeatherService,
+    private favoriteService: FavoriteService
+    ) { }
 
   ngOnInit(): void {
     this.getLocation();
   }
 
+  // find city by input
   onSubmit() {
     if (!this.searchCity) {
       alert("NO CITY CHOOSE!");
@@ -27,6 +36,7 @@ export class WeatherComponent implements OnInit {
     }
   }
 
+  // switch from Celsius to Fahrenheit
   onUnitChange() {
     if (this.myWeather.units == "metric") {
       this.myWeather.units = "imperial"
@@ -56,7 +66,7 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getCityService(lat, lon).subscribe({
       next: (data) => {
         let anyWeather = data;
-        console.log(anyWeather)
+        // console.log(anyWeather)
         this.myWeather.localCity = anyWeather.name;
         this.myWeather.currentCity = anyWeather.name;
         this.getWeather();
@@ -67,6 +77,7 @@ export class WeatherComponent implements OnInit {
     })
   }
 
+  // get data from API through service
   getWeather() {
     if (!this.searchCity) {
       this.myWeather.lastCity = this.myWeather.currentCity;
@@ -76,7 +87,7 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getWeatherService(this.myWeather.lastCity, this.myWeather.units).subscribe({
       next: (data) => {
         let anyWeather = data;
-        console.log(anyWeather)
+        // console.log(anyWeather)
         this.myWeather.currentCity = anyWeather.name;
         this.myWeather.feelsLike = anyWeather.main.feels_like;
         this.myWeather.humidity = anyWeather.main.humidity;
@@ -86,6 +97,7 @@ export class WeatherComponent implements OnInit {
         this.myWeather.iconCode = anyWeather.weather[0].icon;
         this.myWeather.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather.iconCode + '@2x.png';
         this.getWallpaper();
+        this.addToFavorites();
       },
       error: (error) => {
         console.log(error);
@@ -94,6 +106,7 @@ export class WeatherComponent implements OnInit {
     })
   }
 
+  // get wallpaper by weather conditions
   getWallpaper() {
     switch (this.myWeather.iconCode) {
       case "01d": this.myWeather.backgroundImage = "assets/images/day01.jpg";
@@ -120,6 +133,23 @@ export class WeatherComponent implements OnInit {
         this.myWeather.backgroundImage = "assets/images/day.jpg";
     }
     // console.log(this.myWeather.iconCode)
+  }
+
+  addToFavorites() {
+    this.favorite.currentCity = this.myWeather.currentCity;
+    this.favorite.temperature = this.myWeather.temperature;
+    this.favorite.summary = this.myWeather.summary;
+    this.favorite.humidity = this.myWeather.humidity;
+    this.favorite.currentCity = this.myWeather.currentCity;
+    this.favorite.pressure = this.myWeather.pressure;
+
+    this.favoriteService.addToFavoriteService(this.favorite)
+    // console.log(this.favorite)
+  }
+
+  goToCity(item: Favorite) {
+    this.searchCity = item.currentCity;
+    this.onSubmit()
   }
 
 }
