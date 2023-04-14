@@ -1,22 +1,16 @@
-import { OpenWeather } from "./open-weather.model";
-
-export class Favorite {    
-
+export class LastFound {
     currentCity: string = "";
     humidity: number = 0;
     pressure: number = 0;
     temperature: number = 0;
-    summary: string = "";
-
+    summary: string = ""; 
 }
 
-export class FavoriteList {    
-
-    list: Array<Favorite> = [];
-
+export class LastFoundList {
+    list: Array<LastFound> = [];
 }
 
-export const FAVOTITE_DATA = [
+export const LAST_FOUND_DATA = [
     {
         currentCity: "Deva",
         feelsLike: 18,

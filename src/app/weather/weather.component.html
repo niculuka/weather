@@ -9,7 +9,7 @@
         <div class="search">
             <form #form="ngForm" (submit)="onSubmit()">
                 <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
-                <img src="/assets/images/search.svg" alt="search.jpg" (click)="onSubmit()">
+                <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="onSubmit()">
             </form>
         </div>
 
@@ -17,6 +17,13 @@
         <div class="card" *ngIf="myWeather.currentCity">
             <div>
                 <h1>{{myWeather.currentCity}}</h1>
+
+                <div class="heart" (click)="markAsFavorite()">
+                    <img class="heart-svg" src="/assets/svgs/heart-fill-red.svg" alt="heart-fill-red.svg"
+                        *ngIf="myWeather.favorite">
+                    <img class="heart-svg" src="/assets/svgs/heart-white.svg" alt="heart-white.svg" *ngIf="!myWeather.favorite">
+                </div>
+
                 <div class="temperature">
                     {{myWeather.temperature | number: "1.0-0"}}° {{myWeather.units=="imperial" ? "F" : "C"}}
                 </div>
@@ -46,32 +53,72 @@
             </form>
         </div>
 
-        <div class="favorite" *ngIf="myWeather.currentCity">
-            <table>
-                <tr>
-                    <td colspan="6">--- under construction ---</td>
-                </tr>
-                <tr *ngFor="let item of favoritesItems; index as ind">
+        <div class="bookmark" *ngIf="myWeather.currentCity">
 
-                    <td>{{ind+1}}</td>
-                    <td (click)="goToCity(item)">
-                        {{item.currentCity}}
-                    </td>
-                    <td>
-                        {{item.temperature | number: "1.0-0"}}° C
-                    </td>
-                    <td>
-                        {{item.summary}}
-                    </td>                    
-                    <td>
-                        {{item.humidity}}%
-                    </td>
-                    <td>
-                        {{item.pressure}} hPa
-                    </td>
+            <div class="last-found">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>History</th>
+                            <th colspan="5"></th>
+                            <th>
+                                <img class="close-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white"
+                                    (click)="clearFavoritesList()">
+                            </th>
+                        </tr>
+                        <tr *ngIf="lastFoundItems.list.length<=0">
+                            <th colspan="8"> - - - empty list - - -</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lastFoundItems.list; index as ind" (click)="getLastFound(item)">
+                            <td>{{ind+1}}</td>
+                            <td>
+                                {{item.currentCity}}
+                            </td>
+                            <td>
+                                {{item.temperature | number: "1.0-0"}}° C
+                            </td>
+                            <td>
+                                {{item.summary}}
+                            </td>
+                            <td>
+                                {{item.humidity}}%
+                            </td>
+                            <td>
+                                {{item.pressure}} hPa
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                </tr>
-            </table>
+            <div class="favorite-list">
+                <table>
+                    <tr>
+                        <th>Favorites</th>
+                    </tr>
+                    <tr *ngFor="let item of lastFoundItems.list; index as ind" (click)="getFavorites(item)">
+                        <td>{{ind+1}}</td>
+                        <td>
+                            {{item.currentCity}}
+                        </td>
+                        <td>
+                            {{item.temperature | number: "1.0-0"}}° C
+                        </td>
+                        <td>
+                            {{item.summary}}
+                        </td>
+                        <td>
+                            {{item.humidity}}%
+                        </td>
+                        <td>
+                            {{item.pressure}} hPa
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
     </div>
 

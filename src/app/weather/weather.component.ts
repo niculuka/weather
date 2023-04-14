@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../service/weather.service';
 import { OpenWeather } from 'src/app/model/open-weather.model';
-import { FAVOTITE_DATA, Favorite } from '../model/favorite.model';
-import { FavoriteService } from '../service/favorite.service';
+import { LastFound, LastFoundList } from '../model/last-found.model';
+import { LastFoundService } from '../service/last-found.service';
 
 @Component({
   selector: 'app-weather',
@@ -10,49 +10,24 @@ import { FavoriteService } from '../service/favorite.service';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit {
-
   myWeather: OpenWeather = new OpenWeather();
   searchCity: string = "";
 
-  favorite: Favorite = new Favorite();
-  favoritesItems: Array<Favorite> = FAVOTITE_DATA;  
+  lastFound!: LastFound;
+  lastFoundItems!: LastFoundList;
 
   constructor(
     private weatherService: WeatherService,
-    private favoriteService: FavoriteService
-    ) { }
+    private lastFoundService: LastFoundService
+  ) {
+    lastFoundService.getLastFoundListObservable().subscribe(data => {
+      this.lastFoundItems = data;
+    });
+  }
 
   ngOnInit(): void {
     this.getLocation();
-  }
-
-  // find city by input
-  onSubmit() {
-    if (!this.searchCity) {
-      alert("NO CITY CHOOSE!");
-    } else {
-      this.getWeather();
-      this.searchCity = "";
-    }
-  }
-
-  // switch from Celsius to Fahrenheit
-  onUnitChange() {
-    if (this.myWeather.units == "metric") {
-      this.myWeather.units = "imperial"
-    } else {
-      this.myWeather.units = "metric"
-    }
-    if (this.myWeather.localCity !== "") {
-      if (this.myWeather.localCity == this.myWeather.currentCity) {
-        this.getCity(this.myWeather.lat, this.myWeather.lon);
-      } else {
-        this.getWeather();
-      }
-    } else {
-      alert("NO CITY CHOOSE!")
-    }
-  }
+  }  
 
   getLocation() {
     this.weatherService.getLocationService().then(location => {
@@ -97,13 +72,42 @@ export class WeatherComponent implements OnInit {
         this.myWeather.iconCode = anyWeather.weather[0].icon;
         this.myWeather.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather.iconCode + '@2x.png';
         this.getWallpaper();
-        this.addToFavorites();
+        this.addToLastFound(this.myWeather)
       },
       error: (error) => {
         console.log(error);
         alert("CITY NOT FOUND!");
       }
     })
+  }
+  
+  markAsFavorite() {
+    this.myWeather.favorite = !this.myWeather.favorite;
+  }
+
+  addToLastFound(item: OpenWeather) {
+    this.lastFound = new LastFound();
+    this.lastFound.currentCity = item.currentCity;
+    this.lastFound.humidity = item.humidity;
+    this.lastFound.pressure = item.pressure;
+    this.lastFound.summary = item.summary;
+    this.lastFound.temperature = item.temperature;
+    this.lastFoundService.addToFLastFoundService(this.lastFound)
+  }
+
+  getLastFound(item: LastFound) {
+    this.searchCity = item.currentCity;
+    this.onSubmit()
+  }
+
+  getFavorites(item: LastFound) {
+    console.log(item)
+    // this.searchCity = item.currentCity;
+    // this.onSubmit()
+  }
+
+  clearFavoritesList() {
+    this.lastFoundService.clearLastFoundService();
   }
 
   // get wallpaper by weather conditions
@@ -133,23 +137,34 @@ export class WeatherComponent implements OnInit {
         this.myWeather.backgroundImage = "assets/images/day.jpg";
     }
     // console.log(this.myWeather.iconCode)
+  }  
+
+  // find city by input
+  onSubmit() {
+    if (!this.searchCity) {
+      alert("NO CITY CHOOSE!");
+    } else {
+      this.getWeather();
+      this.searchCity = "";
+    }
   }
 
-  addToFavorites() {
-    this.favorite.currentCity = this.myWeather.currentCity;
-    this.favorite.temperature = this.myWeather.temperature;
-    this.favorite.summary = this.myWeather.summary;
-    this.favorite.humidity = this.myWeather.humidity;
-    this.favorite.currentCity = this.myWeather.currentCity;
-    this.favorite.pressure = this.myWeather.pressure;
-
-    this.favoriteService.addToFavoriteService(this.favorite)
-    // console.log(this.favorite)
-  }
-
-  goToCity(item: Favorite) {
-    this.searchCity = item.currentCity;
-    this.onSubmit()
+  // switch from Celsius to Fahrenheit
+  onUnitChange() {
+    if (this.myWeather.units == "metric") {
+      this.myWeather.units = "imperial"
+    } else {
+      this.myWeather.units = "metric"
+    }
+    if (this.myWeather.localCity !== "") {
+      if (this.myWeather.localCity == this.myWeather.currentCity) {
+        this.getCity(this.myWeather.lat, this.myWeather.lon);
+      } else {
+        this.getWeather();
+      }
+    } else {
+      alert("NO CITY CHOOSE!")
+    }
   }
 
 }

@@ -3,6 +3,8 @@ export class OpenWeather {
     currentCity: string = "";
     lastCity: string = "";
 
+    favorite: boolean = false;
+
     units: string = "metric";
     feelsLike: number = 0;
     humidity: number = 0;

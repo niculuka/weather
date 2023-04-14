@@ -60,6 +60,7 @@ button:hover {
 }
 
 .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,10 +74,23 @@ button:hover {
     /* border: 2px solid grey; */
 }
 
+.heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
 .card h1 {
     text-align: center;
     font-size: 40px;
     margin: 20px 0 10px 0;
+    /* border: 2px solid red; */
+}
+
+.heart-svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
     /* border: 2px solid red; */
 }
 
@@ -122,7 +136,7 @@ hr {
 
 .form-group {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
 }
 
 .space {
@@ -138,7 +152,14 @@ hr {
     font-size: 30px;
 }
 
-.favorite {
+.bookmark {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.last-found,
+.favorite-list {
     color: white;
     padding: 20px;
     background: rgba(0, 0, 0, 0.3);
@@ -146,17 +167,30 @@ hr {
     border-radius: 20px;
 }
 
+.last-found {
+    margin-right: 20px;
+}
+
 table {
     border-collapse: collapse;
-  }
+}
+
+tbody tr{
+    cursor: pointer;
+}
+
+.close-svg {
+    cursor: pointer;
+}
 
 tr {
-    cursor: pointer;
     border-bottom: 1px solid white;
 }
 
+th,
 td {
-    padding: 10px;
+    font-size: 20px;
+    padding: 10px 10px;
 }
 
 @media(max-width: 1040px) {
@@ -190,6 +224,21 @@ td {
 
     .form-group label {
         font-size: 26px;
+    }
+
+    .bookmark {
+        flex-direction: column;
+    }
+
+    .last-found {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    th,
+    td {
+        font-size: 18px;
+        padding: 4px 10px;
     }
 }
 
@@ -225,5 +274,15 @@ td {
     .form-group label {
         font-size: 22px;
     }
-}
 
+    .last-found,
+    .favorite-list {
+        padding: 10px;
+    }
+
+    th,
+    td {
+        font-size: 16px;
+        padding: 4px;
+    }
+}
