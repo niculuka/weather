@@ -10,7 +10,6 @@ Aplicatia functioneaza aici:  https://weather.redporto.com
 
 -schimba backgroundul in functie de vreme
 
--am rezolvat toate cerintele, in afara de "adaugare orase ca favorite"(rezolvata partial)
--mai trebuia sa stocheze datele ultimelor 5 cautari in tr-o lista)
+-stocheaza 5 orase ca favorite si ultimele 5 cautari
 
 
