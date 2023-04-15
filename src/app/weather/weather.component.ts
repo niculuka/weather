@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../service/weather.service';
 import { OpenWeather } from 'src/app/model/open-weather.model';
-import { LastFound, LastFoundList } from '../model/last-found.model';
+import { LAST_FOUND_DATA, LastFound, LastFoundList } from '../model/last-found.model';
 import { LastFoundService } from '../service/last-found.service';
+import { FAVORITE_DATA, Favorite, FavoriteList } from '../model/favorite.model';
+import { FavoriteService } from '../service/favorite.service';
 
 @Component({
   selector: 'app-weather',
@@ -13,22 +15,30 @@ export class WeatherComponent implements OnInit {
   myWeather: OpenWeather = new OpenWeather();
   searchCity: string = "";
 
+  favorite!: Favorite;
+  favoriteList!: FavoriteList;
+
   lastFound!: LastFound;
-  lastFoundItems!: LastFoundList;
+  lastFoundList!: LastFoundList;
 
   constructor(
     private weatherService: WeatherService,
-    private lastFoundService: LastFoundService
+    private lastFoundService: LastFoundService,
+    private favoriteService: FavoriteService
   ) {
+    favoriteService.getFavoriteListObservable().subscribe(data => {
+      this.favoriteList = data;
+    });
     lastFoundService.getLastFoundListObservable().subscribe(data => {
-      this.lastFoundItems = data;
+      this.lastFoundList = data;
     });
   }
 
   ngOnInit(): void {
     this.getLocation();
-  }  
+  }
 
+  // get data from API through service -----------------------------------------------------------------------
   getLocation() {
     this.weatherService.getLocationService().then(location => {
       this.myWeather.lat = location.lat;
@@ -52,7 +62,6 @@ export class WeatherComponent implements OnInit {
     })
   }
 
-  // get data from API through service
   getWeather() {
     if (!this.searchCity) {
       this.myWeather.lastCity = this.myWeather.currentCity;
@@ -62,7 +71,6 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getWeatherService(this.myWeather.lastCity, this.myWeather.units).subscribe({
       next: (data) => {
         let anyWeather = data;
-        // console.log(anyWeather)
         this.myWeather.currentCity = anyWeather.name;
         this.myWeather.feelsLike = anyWeather.main.feels_like;
         this.myWeather.humidity = anyWeather.main.humidity;
@@ -71,6 +79,7 @@ export class WeatherComponent implements OnInit {
         this.myWeather.summary = anyWeather.weather[0].main;
         this.myWeather.iconCode = anyWeather.weather[0].icon;
         this.myWeather.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather.iconCode + '@2x.png';
+        this.isFavorite();
         this.getWallpaper();
         this.addToLastFound(this.myWeather)
       },
@@ -80,11 +89,54 @@ export class WeatherComponent implements OnInit {
       }
     })
   }
-  
-  markAsFavorite() {
+
+  // set city as Favorite -----------------------------------------------------------------------------------
+  setFavorite(item: OpenWeather) {
     this.myWeather.favorite = !this.myWeather.favorite;
+    this.favorite = new Favorite();
+    this.favorite.currentCity = item.currentCity;
+    this.favorite.temperature = item.temperature;
+
+    if (this.myWeather.favorite) {
+      this.favoriteService.addToFavoriteService(this.favorite);
+    } else {
+      this.favoriteService.removeFavoriteCityService(this.favorite);
+    }
+
   }
 
+  // set city as Favorite -----------------------------------------------------------------------------------
+  getFavoriteCity(item: Favorite) {
+    this.searchCity = item.currentCity;
+    this.onSubmit();
+  }
+
+  isFavorite() {
+    let city = this.favoriteList.list.find(item => item.currentCity === this.myWeather.lastCity);
+    if (city) {
+      this.myWeather.favorite = true;
+    } else {
+      this.myWeather.favorite = false;
+    }
+  }
+
+  removeFavoriteCity(item: Favorite) {
+    this.favoriteService.removeFavoriteCityService(item)
+    // console.log(item.currentCity)
+    this.isFavorite();
+  }
+
+  // find city by input --------------------------------------------------------------------------------
+  onSubmit() {
+    if (!this.searchCity) {
+      alert("NO CITY CHOOSE!");
+    } else {
+      this.getWeather();
+      this.searchCity = "";
+    }
+  }
+
+  // add searchings to the list -------------------------------------------------------------------------
   addToLastFound(item: OpenWeather) {
     this.lastFound = new LastFound();
     this.lastFound.currentCity = item.currentCity;
@@ -92,25 +144,19 @@ export class WeatherComponent implements OnInit {
     this.lastFound.pressure = item.pressure;
     this.lastFound.summary = item.summary;
     this.lastFound.temperature = item.temperature;
-    this.lastFoundService.addToFLastFoundService(this.lastFound)
+    this.lastFoundService.addToLastFoundService(this.lastFound)
   }
 
   getLastFound(item: LastFound) {
     this.searchCity = item.currentCity;
-    this.onSubmit()
-  }
-
-  getFavorites(item: LastFound) {
-    console.log(item)
-    // this.searchCity = item.currentCity;
-    // this.onSubmit()
+    this.onSubmit();
   }
 
   clearFavoritesList() {
     this.lastFoundService.clearLastFoundService();
   }
 
-  // get wallpaper by weather conditions
+  // set wallpaper by weather conditions -----------------------------------------------------------------
   getWallpaper() {
     switch (this.myWeather.iconCode) {
       case "01d": this.myWeather.backgroundImage = "assets/images/day01.jpg";
@@ -136,20 +182,9 @@ export class WeatherComponent implements OnInit {
       default:
         this.myWeather.backgroundImage = "assets/images/day.jpg";
     }
-    // console.log(this.myWeather.iconCode)
-  }  
-
-  // find city by input
-  onSubmit() {
-    if (!this.searchCity) {
-      alert("NO CITY CHOOSE!");
-    } else {
-      this.getWeather();
-      this.searchCity = "";
-    }
   }
 
-  // switch from Celsius to Fahrenheit
+  // switch from Celsius to Fahrenheit ----------------------------------------------------------------
   onUnitChange() {
     if (this.myWeather.units == "metric") {
       this.myWeather.units = "imperial"

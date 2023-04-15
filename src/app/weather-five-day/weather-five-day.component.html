@@ -9,8 +9,12 @@
         <div class="search">
             <form #form="ngForm" (submit)="onSubmit()">
                 <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
-                <img src="/assets/images/search.svg" alt="search.jpg" (click)="onSubmit()">
+                <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="onSubmit()">
             </form>
+        </div>
+
+        <div class="waiting">
+            <h1 style="color: white" *ngIf="!myWeather5.currentCity">Waiting...</h1>
         </div>
 
         <h1 class="city" *ngIf="myWeather5.city.name">{{myWeather5.city.name}}</h1>

@@ -80,17 +80,22 @@ button:hover {
     right: 10px;
 }
 
+.heart-svg {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    /* border: 2px solid red; */
+}
+
+.heart-svg:hover {
+    width: 26px;
+    height: 26px;
+}
+
 .card h1 {
     text-align: center;
     font-size: 40px;
     margin: 20px 0 10px 0;
-    /* border: 2px solid red; */
-}
-
-.heart-svg {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
     /* border: 2px solid red; */
 }
 
@@ -156,6 +161,7 @@ hr {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
 }
 
 .last-found,
@@ -191,6 +197,7 @@ th,
 td {
     font-size: 20px;
     padding: 10px 10px;
+    /* border: 2px solid red; */
 }
 
 @media(max-width: 1040px) {

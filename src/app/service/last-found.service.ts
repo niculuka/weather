@@ -14,7 +14,7 @@ export class LastFoundService {
 
   constructor() { }
 
-  addToFLastFoundService(lastFound: LastFound): void {
+  addToLastFoundService(lastFound: LastFound): void {
     
     let duplicate = this.lastFoundList.list.find(item => item.currentCity === lastFound.currentCity);
     if (duplicate) {
@@ -30,7 +30,6 @@ export class LastFoundService {
     this.lastFound = new LastFound();
   }
 
-
   getLastFoundListObservable(): Observable<LastFoundList> {
     return this.lastFoundListSubject.asObservable();
   }
@@ -45,14 +44,14 @@ export class LastFoundService {
   }
 
   private setLastFoundListToLocalStorage(): void {
-    const favJson = JSON.stringify(this.lastFoundList);
-    localStorage.setItem('last-found', favJson);
-    // console.log(favJson)
+    const lastJson = JSON.stringify(this.lastFoundList);
+    localStorage.setItem('last-found', lastJson);
+    // console.log(lastJson)
     this.lastFoundListSubject.next(this.lastFoundList);
   }
 
   private getLastFoundListFromLocalStorage(): LastFoundList {
-    const favJson = localStorage.getItem('last-found');
-    return favJson ? JSON.parse(favJson) : new LastFoundList();
+    const lastJson = localStorage.getItem('last-found');
+    return lastJson ? JSON.parse(lastJson) : new LastFoundList();
   }
 }
