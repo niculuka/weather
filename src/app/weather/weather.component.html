@@ -2,6 +2,34 @@
 
     <div class="back">
         <button routerLink="/">Back</button>
+
+        <div class="favorite">
+            <button>Favorites</button>
+            <div class="favorite-list">
+                <table>
+                    <thead>
+                        <tr *ngIf="favoriteList.list.length<=0">
+                            <th colspan="4"> - - - empty list - - -</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of favoriteList.list; index as ind">
+                            <td (click)="getFavoriteCity(item)">{{ind+1}}</td>
+                            <td (click)="getFavoriteCity(item)">
+                                {{item.currentCity}}
+                            </td>
+                            <td (click)="getFavoriteCity(item)">
+                                {{item.temperature | number: "1.0-0"}}° C
+                            </td>
+                            <th style="text-align: right;" (click)="removeFavoriteCity(item)">
+                                <img class="close-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white">
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <div class="content">
@@ -32,7 +60,7 @@
                 </div>
 
                 <div class="temperature">
-                    {{myWeather.temperature | number: "1.0-0"}}° {{myWeather.units=="imperial" ? "F" : "C"}}
+                    {{myWeather.temperature | number: "1.0-0"}}° C
                 </div>
                 <img src={{myWeather.iconURL}} alt={{myWeather.iconURL}}>
                 <p class="summary">{{myWeather.summary}}</p>
@@ -41,91 +69,51 @@
             <hr>
 
             <div class="details">
-                <p>Feels like: {{myWeather.feelsLike | number: "1.0-0"}}° {{myWeather.units=="imperial" ?
-                    "F" : "C"}}</p>
+                <p>Feels like: {{myWeather.feelsLike | number: "1.0-0"}}° C</p>
                 <p>Presure: {{myWeather.pressure}} hPa</p>
                 <p>Humidity: {{myWeather.humidity}} %</p>
             </div>
 
-            <form>
-                <div class="form-group space">
-                    <input type="radio" (change)="onUnitChange()" name="unit"
-                        [checked]="myWeather.units=='metric' ? true : false">
-                    <label for="celsius">°C</label>
-                </div>
-                <div class="form-group">
-                    <input type="radio" (change)="onUnitChange()" name="unit">
-                    <label for="fahrenheit">°F</label>
-                </div>
-            </form>
         </div>
 
         <!-- HISTORY --------------------------------------------------------------------------------- -->
         <div class="bookmark" *ngIf="myWeather.currentCity">
 
-            <div class="last-found">
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="5" style="text-align: left;">History</th>
-                            <th style="text-align: right;">
-                                <img class="close-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white"
-                                    (click)="clearFavoritesList()">
-                            </th>
-                        </tr>
-                        <tr *ngIf="lastFoundList.list.length<=0">
-                            <th colspan="8"> - - - empty list - - -</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of lastFoundList.list; index as ind" (click)="getLastFound(item)">
-                            <td>{{ind+1}}</td>
-                            <td>
-                                {{item.currentCity}}
-                            </td>
-                            <td>
-                                {{item.temperature | number: "1.0-0"}}° C
-                            </td>
-                            <td>
-                                {{item.summary}}
-                            </td>
-                            <td>
-                                {{item.humidity}}%
-                            </td>
-                            <td>
-                                {{item.pressure}} hPa
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr class="history-head">
+                        <th colspan="5" style="text-align: left;">History</th>
+                        <th style="text-align: right;">
+                            <img class="close-svg down-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white"
+                                (click)="clearFavoritesList()">
+                        </th>
+                    </tr>
+                    <tr *ngIf="lastFoundList.list.length<=0">
+                        <th colspan="8"> - - - empty list - - -</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of lastFoundList.list; index as ind" (click)="getLastFound(item)">
+                        <td>{{ind+1}}</td>
+                        <td>
+                            {{item.currentCity}}
+                        </td>
+                        <td>
+                            {{item.temperature | number: "1.0-0"}}° C
+                        </td>
+                        <td>
+                            {{item.summary}}
+                        </td>
+                        <td>
+                            {{item.humidity}}%
+                        </td>
+                        <td>
+                            {{item.pressure}} hPa
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <div class="favorite-list">
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="3" style="text-align: left;">Favorites</th>
-                        </tr>
-                        <tr *ngIf="favoriteList.list.length<=0">
-                            <th colspan="4"> - - - empty list - - -</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of favoriteList.list; index as ind">
-                            <td (click)="getFavoriteCity(item)">{{ind+1}}</td>
-                            <td (click)="getFavoriteCity(item)">
-                                {{item.currentCity}}
-                            </td>
-                            <td (click)="getFavoriteCity(item)">
-                                {{item.temperature | number: "1.0-0"}}° C
-                            </td>
-                            <th style="text-align: right;" (click)="removeFavoriteCity(item)">
-                                <img class="close-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white">
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
         </div>
     </div>

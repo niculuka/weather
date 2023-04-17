@@ -29,9 +29,9 @@ export class WeatherService {
   }
 
   // importarea datelor despre vreme (1 zi)
-  getWeatherService(searchCity: string, units: string): Observable<any> {
+  getWeatherService(searchCity: string): Observable<any> {
     return this.http.get(
-      "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=129fe5173bd0c4c830ba6e766b567567&units=" + units
+      "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=129fe5173bd0c4c830ba6e766b567567&units=metric"
     )
   }
 

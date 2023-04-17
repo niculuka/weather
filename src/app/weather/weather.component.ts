@@ -68,7 +68,7 @@ export class WeatherComponent implements OnInit {
     } else {
       this.myWeather.lastCity = this.searchCity;
     }
-    this.weatherService.getWeatherService(this.myWeather.lastCity, this.myWeather.units).subscribe({
+    this.weatherService.getWeatherService(this.myWeather.lastCity).subscribe({
       next: (data) => {
         let anyWeather = data;
         this.myWeather.currentCity = anyWeather.name;
@@ -92,6 +92,10 @@ export class WeatherComponent implements OnInit {
 
   // set city as Favorite -----------------------------------------------------------------------------------
   setFavorite(item: OpenWeather) {
+    if (this.favoriteList.list.length > 4 && !this.myWeather.favorite) {
+      alert("ALLOWED MAX 5 FAVORITES CITIES!");
+      return;
+    }
     this.myWeather.favorite = !this.myWeather.favorite;
     this.favorite = new Favorite();
     this.favorite.currentCity = item.currentCity;
@@ -181,24 +185,6 @@ export class WeatherComponent implements OnInit {
         break;
       default:
         this.myWeather.backgroundImage = "assets/images/day.jpg";
-    }
-  }
-
-  // switch from Celsius to Fahrenheit ----------------------------------------------------------------
-  onUnitChange() {
-    if (this.myWeather.units == "metric") {
-      this.myWeather.units = "imperial"
-    } else {
-      this.myWeather.units = "metric"
-    }
-    if (this.myWeather.localCity !== "") {
-      if (this.myWeather.localCity == this.myWeather.currentCity) {
-        this.getCity(this.myWeather.lat, this.myWeather.lon);
-      } else {
-        this.getWeather();
-      }
-    } else {
-      alert("NO CITY CHOOSE!")
     }
   }
 

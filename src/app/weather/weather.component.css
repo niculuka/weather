@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 100vw;
     height: 100vh;
     background-size: cover;
@@ -11,12 +12,15 @@
 }
 
 .back {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     width: 100%;
     max-width: 1500px;
 }
 
 button {
-    float: left;
     cursor: pointer;
     color: rgb(255, 255, 255);
     font-size: 18px;
@@ -31,11 +35,30 @@ button:hover {
     background: rgba(0, 0, 0, 0.3);
 }
 
+button:hover+.favorite-list {
+    display: block;
+}
+
+.favorite-list {
+    position: absolute;
+    display: none;
+    top: 52px;
+    right: 10px;
+    z-index: 1;
+}
+
+.favorite-list:hover {
+    display: block;
+}
+
+.favorite-head:hover {
+    background: none;
+}
+
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     /* border: 2px solid black; */
 }
 
@@ -139,24 +162,6 @@ hr {
     /* border: 2px solid grey; */
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.space {
-    margin-right: 30px;
-}
-
-.form-group input[type='radio'] {
-    accent-color: #059df5;
-    font-size: 30px;
-}
-
-.form-group label {
-    font-size: 30px;
-}
-
 .bookmark {
     display: flex;
     flex-direction: row;
@@ -164,24 +169,18 @@ hr {
     align-items: center;
 }
 
-.last-found,
-.favorite-list {
-    color: white;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 6px 10px 0px rgba(62, 62, 62, 0.2);
+/* .last-found {
     border-radius: 20px;
-}
-
-.last-found {
-    margin-right: 20px;
-}
+} */
 
 table {
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 10px 0px rgba(62, 62, 62, 0.2);
     border-collapse: collapse;
 }
 
-tbody tr{
+tbody tr {
     cursor: pointer;
 }
 
@@ -189,14 +188,30 @@ tbody tr{
     cursor: pointer;
 }
 
+.down-svg {
+    padding: 4px;
+}
+
+.down-svg:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
 tr {
     border-bottom: 1px solid white;
+}
+
+tr:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.history-head:hover {
+    background: none;
 }
 
 th,
 td {
     font-size: 20px;
-    padding: 10px 10px;
+    padding: 10px 20px;
     /* border: 2px solid red; */
 }
 
@@ -207,6 +222,10 @@ td {
 
     button {
         font-size: 16px;
+    }
+
+    .favorite-list {
+        top: 48px;
     }
 
     .card {
@@ -227,10 +246,6 @@ td {
 
     .details {
         font-size: 20px;
-    }
-
-    .form-group label {
-        font-size: 26px;
     }
 
     .bookmark {
@@ -276,15 +291,6 @@ td {
 
     .details {
         font-size: 18px;
-    }
-
-    .form-group label {
-        font-size: 22px;
-    }
-
-    .last-found,
-    .favorite-list {
-        padding: 10px;
     }
 
     th,
