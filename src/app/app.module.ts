@@ -8,7 +8,6 @@ import { WeatherComponent } from './weather/weather.component';
 import { FormsModule } from '@angular/forms';
 import { WeatherFiveDayComponent } from './weather-five-day/weather-five-day.component';
 import { HomeComponent } from './home/home.component';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,9 +22,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     HttpClientModule,
     FormsModule
   ],
-  providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
