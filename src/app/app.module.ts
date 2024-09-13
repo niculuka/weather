@@ -1,26 +1,33 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { WeatherComponent } from './weather/weather.component';
 import { FormsModule } from '@angular/forms';
-import { WeatherFiveDayComponent } from './weather-five-day/weather-five-day.component';
-import { HomeComponent } from './home/home.component';
+//
+import { AppComponent } from './app.component';
+import { HomeComponent } from './guest/home/home.component';
+import { WeatherComponent } from './guest/weather/weather.component';
+import { WeatherFiveComponent } from './guest/weather-five/weather-five.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherComponent,
-    WeatherFiveDayComponent,
+    WeatherFiveComponent,
     HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-center-center',
+      newestOnTop: false,
+      preventDuplicates: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

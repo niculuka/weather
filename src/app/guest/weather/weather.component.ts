@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../service/weather.service';
-import { OpenWeather } from 'src/app/model/open-weather.model';
-import { LAST_FOUND_DATA, LastFound, LastFoundList } from '../model/last-found.model';
-import { LastFoundService } from '../service/last-found.service';
-import { FAVORITE_DATA, Favorite, FavoriteList } from '../model/favorite.model';
-import { FavoriteService } from '../service/favorite.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { WeatherService } from '../../shared/services/weather.service';
+import { Weather1 } from 'src/app/shared/model/weather1.model';
+import { LastFound, LastFoundList } from '../../shared/model/last-found.model';
+import { LastFoundService } from '../../shared/services/last-found.service';
+import { Favorite, FavoriteList } from '../../shared/model/favorite.model';
+import { FavoriteService } from '../../shared/services/favorite.service';
+import { LocationService } from 'src/app/shared/services/location.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
-export class WeatherComponent implements OnInit {
-  myWeather: OpenWeather = new OpenWeather();
+export class WeatherComponent implements OnInit, OnDestroy {
+  myWeather: Weather1 = new Weather1();
   searchCity: string = "";
 
   favorite!: Favorite;
@@ -21,79 +23,84 @@ export class WeatherComponent implements OnInit {
   lastFound!: LastFound;
   lastFoundList!: LastFoundList;
 
+  private sub0: any;
+  private sub1: any;
+  private sub2: any;
+  private sub3: any;
+
   constructor(
+    private locationService: LocationService,
     private weatherService: WeatherService,
     private lastFoundService: LastFoundService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private toastrService: ToastrService
   ) {
-    favoriteService.getFavoriteListObservable().subscribe(data => {
+    this.sub0 = favoriteService.getFavoriteListObservable().subscribe(data => {
       this.favoriteList = data;
     });
-    lastFoundService.getLastFoundListObservable().subscribe(data => {
+    this.sub1 = lastFoundService.getLastFoundListObservable().subscribe(data => {
       this.lastFoundList = data;
     });
+
   }
 
   ngOnInit(): void {
-    this.getLocation();
-  }
-
-  // get data from API through service -----------------------------------------------------------------------
-  getLocation() {
-    this.weatherService.getLocationService().then(location => {
-      this.myWeather.lat = location.lat;
-      this.myWeather.lon = location.lon;
-      this.getCity(this.myWeather.lat, this.myWeather.lon);
-    })
-  }
-
-  getCity(lat: number, lon: number) {
-    this.weatherService.getCityService(lat, lon).subscribe({
-      next: (data) => {
-        let anyWeather = data;
-        // console.log(anyWeather)
-        this.myWeather.localCity = anyWeather.name;
-        this.myWeather.currentCity = anyWeather.name;
-        this.getWeather();
-      },
-      error: (error) => {
-        console.log(error)
+    this.locationService.getCurrentLocationObservable().subscribe(data => {
+      this.myWeather.lat = data.lat;
+      this.myWeather.lon = data.lon;
+      if (this.myWeather.lat == 0 || this.myWeather.lon == 0) {
+        this.locationService.getLocationService();
       }
-    })
+      else {
+        this.locationService.getCityService(this.myWeather.lat, this.myWeather.lon).subscribe({
+          next: (data) => {
+            this.getWeather(data.name);
+          },
+          error: (error) => {
+            this.toastrService.warning("SERVER ERROR!");
+            console.log(error);
+          }
+        })
+      }
+    });
   }
 
-  getWeather() {
-    if (!this.searchCity) {
-      this.myWeather.lastCity = this.myWeather.currentCity;
-    } else {
-      this.myWeather.lastCity = this.searchCity;
-    }
-    this.weatherService.getWeatherService(this.myWeather.lastCity).subscribe({
+  getWeather(city: string) {
+    this.weatherService.getWeatherService(city).subscribe({
       next: (data) => {
-        let anyWeather = data;
-        this.myWeather.currentCity = anyWeather.name;
-        this.myWeather.feelsLike = anyWeather.main.feels_like;
-        this.myWeather.humidity = anyWeather.main.humidity;
-        this.myWeather.pressure = anyWeather.main.pressure;
-        this.myWeather.temperature = anyWeather.main.temp;
-        this.myWeather.summary = anyWeather.weather[0].main;
-        this.myWeather.iconCode = anyWeather.weather[0].icon;
+        this.myWeather.currentCity = data.name;
+        this.myWeather.feelsLike = data.main.feels_like;
+        this.myWeather.humidity = data.main.humidity;
+        this.myWeather.pressure = data.main.pressure;
+        this.myWeather.temperature = data.main.temp;
+        this.myWeather.summary = data.weather[0].main;
+        this.myWeather.iconCode = data.weather[0].icon;
         this.myWeather.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather.iconCode + '@2x.png';
-        this.isFavorite();
-        this.getWallpaper();
-        this.addToLastFound(this.myWeather)
+        // this.isFavorite();
+        // this.getWallpaper();
+        // this.addToLastFound(this.myWeather)
       },
       error: (error) => {
+        this.toastrService.warning("NOT FOUND CITY!");
         console.log(error);
-        alert("CITY NOT FOUND!");
       }
     })
+  }
+
+  // find city by input --------------------------------------------------------------------------------
+  onSubmit() {
+    if (this.searchCity.length >= 3) {
+      this.getWeather(this.searchCity);
+    }
+    else {
+      this.toastrService.warning('INSERT MIN 3 CHARS!');
+    }
   }
 
   // set city as Favorite -----------------------------------------------------------------------------------
-  setFavorite(item: OpenWeather) {
+  setFavorite(item: Weather1) {
     if (this.favoriteList.list.length > 4 && !this.myWeather.favorite) {
-      alert("ALLOWED MAX 5 FAVORITES CITIES!");
+      alert("MAX 5 FAVORITES CITIES ALLOWED!");
       return;
     }
     this.myWeather.favorite = !this.myWeather.favorite;
@@ -106,7 +113,6 @@ export class WeatherComponent implements OnInit {
     } else {
       this.favoriteService.removeFavoriteCityService(this.favorite);
     }
-
   }
 
   // set city as Favorite -----------------------------------------------------------------------------------
@@ -116,7 +122,7 @@ export class WeatherComponent implements OnInit {
   }
 
   isFavorite() {
-    let city = this.favoriteList.list.find(item => item.currentCity === this.myWeather.lastCity);
+    let city = this.favoriteList.list.find(item => item.currentCity === this.myWeather.currentCity);
     if (city) {
       this.myWeather.favorite = true;
     } else {
@@ -130,18 +136,8 @@ export class WeatherComponent implements OnInit {
     this.isFavorite();
   }
 
-  // find city by input --------------------------------------------------------------------------------
-  onSubmit() {
-    if (!this.searchCity) {
-      alert("NO CITY CHOOSE!");
-    } else {
-      this.getWeather();
-      this.searchCity = "";
-    }
-  }
-
   // add searchings to the list -------------------------------------------------------------------------
-  addToLastFound(item: OpenWeather) {
+  addToLastFound(item: Weather1) {
     this.lastFound = new LastFound();
     this.lastFound.currentCity = item.currentCity;
     this.lastFound.humidity = item.humidity;
@@ -188,4 +184,10 @@ export class WeatherComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.sub0?.unsubscribe();
+    this.sub1?.unsubscribe();
+    this.sub2?.unsubscribe();
+    this.sub3?.unsubscribe();
+  }
 }

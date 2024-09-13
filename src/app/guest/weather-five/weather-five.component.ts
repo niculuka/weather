@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../service/weather.service';
-import { OpenWeather5 } from '../model/open-weather.model';
+import { WeatherService } from '../../shared/services/weather.service';
+import { Weather5 } from '../../shared/model/weather5.model';
+import { LocationService } from 'src/app/shared/services/location.service';
 
 @Component({
-  selector: 'weather-five-day',
-  templateUrl: './weather-five-day.component.html',
-  styleUrls: ['./weather-five-day.component.css']
+  selector: 'weather-five',
+  templateUrl: './weather-five.component.html',
+  styleUrls: ['./weather-five.component.css']
 })
-export class WeatherFiveDayComponent implements OnInit {
+export class WeatherFiveComponent implements OnInit {
 
   image: string = "assets/images/day.jpg"
 
-  myWeather5: OpenWeather5 = new OpenWeather5();
+  myWeather5: Weather5 = new Weather5();
   searchCity: string = "";
 
-  constructor(private weatherService: WeatherService) { }
+  constructor(
+    private locationService: LocationService,
+    private weatherService: WeatherService,    
+  ) { }
 
   ngOnInit(): void {
     this.getLocation();
@@ -31,15 +35,15 @@ export class WeatherFiveDayComponent implements OnInit {
   }
 
   getLocation() {
-    this.weatherService.getLocationService().then(location => {
-      this.myWeather5.lat = location.lat;
-      this.myWeather5.lon = location.lon;
+    this.locationService.getLocationService().then(x => {
+      this.myWeather5.lat = x.lat;
+      this.myWeather5.lon = x.lon;
       this.getCity(this.myWeather5.lat, this.myWeather5.lon);
     })
   }
 
   getCity(lat: number, lon: number) {
-    this.weatherService.getCityService(lat, lon).subscribe({
+    this.locationService.getCityService(lat, lon).subscribe({
       next: (data) => {
         let anyWeather = data;
         // console.log(anyWeather)

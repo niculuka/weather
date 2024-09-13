@@ -1,13 +1,16 @@
-.container {
+.my-container {
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position: center; */
+    /* border: 2px solid black; */
+}
+
+.my-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    height: 100%;
     /* border: 2px solid black; */
 }
 

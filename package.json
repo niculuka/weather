@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "config": "node set-env.js",
+    "dev": "node server.js",
     "build": "ng build",
     "build-prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
@@ -19,6 +21,7 @@
     "@angular/platform-browser": "^15.2.0",
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
+    "ngx-toastr": "^15.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
