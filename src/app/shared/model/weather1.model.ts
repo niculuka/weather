@@ -1,6 +1,5 @@
 export class Weather1 {
     currentCity: string = "";
-
     favorite: boolean = false;
 
     units: string = "metric";

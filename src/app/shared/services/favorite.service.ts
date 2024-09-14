@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Favorite, FavoriteList } from '../model/favorite.model';
+import { Favorite } from '../model/favorite.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,49 +7,42 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class FavoriteService {
 
-  favorite: Favorite = new Favorite();
-
-  public favoriteList: FavoriteList = this.getFavoriteListFromLocalStorage();
-  private favoriteListSubject: BehaviorSubject<FavoriteList> = new BehaviorSubject(this.favoriteList);
-
-  constructor() { }
+  public favorites: Array<Favorite> = this.getFavoriteListFromLocalStorage();
+  private favoritesSubject: BehaviorSubject<Array<Favorite>> = new BehaviorSubject(this.favorites);
 
   addToFavoriteService(favorite: Favorite): void {
 
-    let duplicate = this.favoriteList.list.find(item => item.currentCity === favorite.currentCity);
+    let duplicate = this.favorites.find(item => item.currentCity == favorite.currentCity);
     if (duplicate) {
       return;
     }
-    if (this.favoriteList.list.length <= 4) {
-      this.favoriteList.list.push(favorite);
-    }
+    this.favorites.push(favorite);
     this.setFavoriteListToLocalStorage();
-    this.favorite = new Favorite();
   }
 
-  getFavoriteListObservable(): Observable<FavoriteList> {
-    return this.favoriteListSubject.asObservable();
+  getFavoriteListObservable(): Observable<Array<Favorite>> {
+    return this.favoritesSubject.asObservable();
   }
 
-  getFavoriteList(): FavoriteList {
-    return this.favoriteListSubject.value;
+  getFavoriteList(): Array<Favorite> {
+    return this.favoritesSubject.value;
   }
 
   removeFavoriteCityService(favorite: Favorite) {
-    let newFavoriteList = this.favoriteList.list.filter(city => city.currentCity != favorite.currentCity);
-    this.favoriteList.list = newFavoriteList;
+    let newFavoriteList = this.favorites.filter(city => city.currentCity != favorite.currentCity);
+    this.favorites = newFavoriteList;
     this.setFavoriteListToLocalStorage();
   }
 
   private setFavoriteListToLocalStorage(): void {
-    const favJson = JSON.stringify(this.favoriteList);
-    localStorage.setItem('favorite', favJson);
+    const favJson = JSON.stringify(this.favorites);
+    localStorage.setItem('favorites', favJson);
     // console.log(favJson)
-    this.favoriteListSubject.next(this.favoriteList);
+    this.favoritesSubject.next(this.favorites);
   }
 
-  private getFavoriteListFromLocalStorage(): FavoriteList {
-    const favJson = localStorage.getItem('favorite');
-    return favJson ? JSON.parse(favJson) : new FavoriteList();
+  private getFavoriteListFromLocalStorage(): Array<Favorite> {
+    const favJson = localStorage.getItem('favorites');
+    return favJson ? JSON.parse(favJson) : [];
   }
 }

@@ -1,4 +1,4 @@
-<div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather.backgroundImage + ')'}">
+<div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather1.backgroundImage + ')'}">
     <div class="my-content">
 
         <div class="back">
@@ -7,14 +7,14 @@
             <div class="favorite">
                 <button>Favorites</button>
                 <div class="favorite-list">
-                    <table>
+                    <!-- <table>
                         <thead>
-                            <tr *ngIf="favoriteList.list.length<=0">
+                            <tr *ngIf="favorites.length<=0">
                                 <th colspan="4"> - - - empty list - - -</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of favoriteList.list; index as ind">
+                            <tr *ngFor="let item of favorites; index as ind">
                                 <td (click)="getFavoriteCity(item)">{{ind+1}}</td>
                                 <td (click)="getFavoriteCity(item)">
                                     {{item.currentCity}}
@@ -27,7 +27,7 @@
                                 </th>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
                 </div>
             </div>
 
@@ -37,50 +37,50 @@
 
             <!-- SEARCH BAR --------------------------------------------------------------------------------- -->
             <div class="search">
-                <form #form="ngForm" (submit)="onSubmit()">
+                <form #form="ngForm" (submit)="search()">
                     <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
-                    <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="onSubmit()">
+                    <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="search()">
                 </form>
             </div>
 
             <!-- WAINTING FOR API RESPONSE ------------------------------------------------------------------ -->
             <div class="waiting">
-                <h1 style="color: white" *ngIf="!myWeather.currentCity">Waiting...</h1>
+                <h1 style="color: white" *ngIf="!myWeather1.currentCity">Waiting...</h1>
             </div>
 
             <!-- C A R D ------------------------------------------------------------------------------------ -->
-            <div class="card" *ngIf="myWeather.currentCity">
+            <div class="card" *ngIf="myWeather1.currentCity">
                 <div>
-                    <h1>{{myWeather.currentCity}}</h1>
+                    <h1>{{myWeather1.currentCity}}</h1>
 
-                    <div class="heart" (click)="setFavorite(myWeather)">
+                    <div class="heart" (click)="setFavorite(myWeather1)">
                         <img class="heart-svg" src="/assets/svgs/heart-fill-red.svg" alt="heart-fill-red.svg"
-                            *ngIf="myWeather.favorite">
+                            *ngIf="myWeather1.favorite">
                         <img class="heart-svg" src="/assets/svgs/heart-white.svg" alt="heart-white.svg"
-                            *ngIf="!myWeather.favorite">
+                            *ngIf="!myWeather1.favorite">
                     </div>
 
                     <div class="temperature">
-                        {{myWeather.temperature | number: "1.0-0"}}° C
+                        {{myWeather1.temperature | number: "1.0-0"}}° C
                     </div>
-                    <img src={{myWeather.iconURL}} alt={{myWeather.iconURL}}>
-                    <p class="summary">{{myWeather.summary}}</p>
+                    <img src={{myWeather1.iconURL}} alt={{myWeather1.iconURL}}>
+                    <p class="summary">{{myWeather1.summary}}</p>
                 </div>
 
                 <hr>
 
                 <div class="details">
-                    <p>Feels like: {{myWeather.feelsLike | number: "1.0-0"}}° C</p>
-                    <p>Presure: {{myWeather.pressure}} hPa</p>
-                    <p>Humidity: {{myWeather.humidity}} %</p>
+                    <p>Feels like: {{myWeather1.feelsLike | number: "1.0-0"}}° C</p>
+                    <p>Presure: {{myWeather1.pressure}} hPa</p>
+                    <p>Humidity: {{myWeather1.humidity}} %</p>
                 </div>
 
             </div>
 
             <!-- HISTORY --------------------------------------------------------------------------------- -->
-            <div class="bookmark" *ngIf="myWeather.currentCity">
+            <div class="bookmark" *ngIf="myWeather1.currentCity">
 
-                <table>
+                <!-- <table>
                     <thead>
                         <tr class="history-head">
                             <th colspan="5" style="text-align: left;">History</th>
@@ -113,7 +113,7 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
 
 
             </div>
