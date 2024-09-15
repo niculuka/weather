@@ -6,7 +6,7 @@ import { CurrentLocation } from '../model/current-location.model';
 @Injectable({
     providedIn: 'root'
 })
-export class LocationService {
+export class CurrentLocationService {
 
     public currLocation: CurrentLocation = this.getCurrentLocationFromLS();
     private currLocationSubject: BehaviorSubject<CurrentLocation> = new BehaviorSubject(this.currLocation);
@@ -14,8 +14,7 @@ export class LocationService {
     constructor(
         private http: HttpClient
     ) { }
-    
-    // cautarea latitudinii / longitudinii actuale --------------------------------------------------
+
     getLocationService(): Promise<any> {
         return new Promise((res, error) => {
             navigator.geolocation.getCurrentPosition(data => {
@@ -31,6 +30,13 @@ export class LocationService {
         return this.currLocationSubject.asObservable();
     }
 
+    resetCurrentLocationService() {
+        this.currLocation.lat = 0;
+        this.currLocation.lon = 0;
+        this.setCurrentLocationToLS();
+        window.location.reload();
+    }
+
     private setCurrentLocationToLS(): void {
         const currLocJson = JSON.stringify(this.currLocation);
         localStorage.setItem('currLocation', currLocJson);
@@ -42,8 +48,7 @@ export class LocationService {
         return currLocJson ? JSON.parse(currLocJson) : new CurrentLocation();
     }
 
-    // cautarea orasului in functie de latitudine/ longitudine --------------------------------------
-    getCityService(lat: number, lon: number): Observable<any> {
+    getCurrentCityService(lat: number, lon: number): Observable<any> {
         return this.http.get(
             "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=129fe5173bd0c4c830ba6e766b567567"
         )

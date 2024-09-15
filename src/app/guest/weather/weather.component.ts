@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from '../../shared/services/weather.service';
 import { Weather1 } from 'src/app/shared/model/weather1.model';
-import { LastFound, LastFoundList } from '../../shared/model/last-found.model';
+import { LastFound } from '../../shared/model/last-found.model';
 import { LastFoundService } from '../../shared/services/last-found.service';
 import { Favorite } from '../../shared/model/favorite.model';
 import { FavoriteService } from '../../shared/services/favorite.service';
-import { LocationService } from 'src/app/shared/services/location.service';
+import { CurrentLocationService } from 'src/app/shared/services/current-location.service';
 import { WallpaperService } from 'src/app/shared/services/wallpaper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -21,8 +21,8 @@ export class WeatherComponent implements OnInit, OnDestroy {
   favorite: Favorite = new Favorite();
   favorites: Array<Favorite> = [];
 
-  lastFound!: LastFound;
-  lastFoundList!: LastFoundList;
+  lastFound: LastFound = new LastFound();
+  lastFounds: Array<LastFound> = [];
 
   private sub0: any;
   private sub1: any;
@@ -31,32 +31,32 @@ export class WeatherComponent implements OnInit, OnDestroy {
   private sub4: any;
 
   constructor(
-    private locationService: LocationService,
+    private currLocationService: CurrentLocationService,
     private weatherService: WeatherService,
     private wallpaperService: WallpaperService,
     private lastFoundService: LastFoundService,
     private favoriteService: FavoriteService,
     private matSnackBar: MatSnackBar
   ) {
-    this.sub0 = favoriteService.getFavoriteListObservable().subscribe(data => {
+    this.sub0 = favoriteService.getFavoritesObservable().subscribe(data => {
       this.favorites = data;
       console.log(this.favorites)
     });
-    this.sub1 = lastFoundService.getLastFoundListObservable().subscribe(data => {
-      this.lastFoundList = data;
+    this.sub1 = lastFoundService.getLastFoundsObservable().subscribe(data => {
+      this.lastFounds = data;
     });
 
   }
 
   ngOnInit(): void {
-    this.sub2 = this.locationService.getCurrentLocationObservable().subscribe(data => {
+    this.sub2 = this.currLocationService.getCurrentLocationObservable().subscribe(data => {
       this.myWeather1.lat = data.lat;
       this.myWeather1.lon = data.lon;
       if (this.myWeather1.lat == 0 || this.myWeather1.lon == 0) {
-        this.locationService.getLocationService();
+        this.currLocationService.getLocationService();
       }
       else {
-        this.sub3 = this.locationService.getCityService(this.myWeather1.lat, this.myWeather1.lon).subscribe({
+        this.sub3 = this.currLocationService.getCurrentCityService(this.myWeather1.lat, this.myWeather1.lon).subscribe({
           next: (data) => {
             this.getWeather(data.name);
           },
@@ -69,6 +69,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
     });
   }
 
+  // WEATHER ----------------------------------------------------------------------------
   getWeather(city: string) {
     this.sub4 = this.weatherService.getWeatherService(city).subscribe({
       next: (data) => {
@@ -100,11 +101,14 @@ export class WeatherComponent implements OnInit, OnDestroy {
     }
   }
 
+  resetCurrentLocation() {
+    this.currLocationService.resetCurrentLocationService();
+  }
 
-
+  // FAVORITES ----------------------------------------------------------------------------
   setFavorite(item: Weather1) {
     if (this.favorites.length > 4 && !item.favorite) {
-      this.matSnackBar.open("MAX 5 FAVORITES CITIES ALLOWED!", 'OK');
+      this.matSnackBar.open("MAXIM 5 FAVORITES CITIES!", 'OK');
       return;
     }
     item.favorite = !item.favorite;
@@ -115,7 +119,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
       this.favoriteService.addToFavoriteService(this.favorite);
     }
     else {
-      this.favoriteService.removeFavoriteCityService(this.favorite);
+      this.favoriteService.removeFavoritesService(this.favorite);
     }
   }
 
@@ -128,28 +132,16 @@ export class WeatherComponent implements OnInit, OnDestroy {
     }
   }
 
+  getFavoriteCity(item: Favorite) {
+    this.searchCity = item.currentCity;
+    this.search();
+  }
 
+  removeFavoriteCity(item: Favorite) {
+    this.favoriteService.removeFavoritesService(item);
+  }
 
-
-  // getFavoriteCity(item: Favorite) {
-  //   this.searchCity = item.currentCity;
-  //   this.search();
-  // }
-
-  // removeFavoriteCity(item: Favorite) {
-  //   this.favoriteService.removeFavoriteCityService(item)
-  //   // console.log(item.currentCity)
-  //   this.isFavorite();
-  // }
-
-  // clearFavoritesList() {
-  //   this.lastFoundService.clearLastFoundService();
-  // }
-
-
-
-
-
+  // HISTORY ----------------------------------------------------------------------------
   addToLastFound(item: Weather1) {
     this.lastFound = new LastFound();
     this.lastFound.currentCity = item.currentCity;
@@ -157,12 +149,16 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.lastFound.pressure = item.pressure;
     this.lastFound.summary = item.summary;
     this.lastFound.temperature = item.temperature;
-    this.lastFoundService.addToLastFoundService(this.lastFound)
+    this.lastFoundService.addToLastFoundsService(this.lastFound)
   }
 
   getLastFound(item: LastFound) {
     this.searchCity = item.currentCity;
     this.search();
+  }
+
+  clearHistory() {
+    this.lastFoundService.clearLastFoundService();
   }
 
   ngOnDestroy(): void {

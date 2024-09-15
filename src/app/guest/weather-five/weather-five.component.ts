@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../../shared/services/weather.service';
 import { Weather5 } from '../../shared/model/weather5.model';
-import { LocationService } from 'src/app/shared/services/location.service';
+import { CurrentLocationService } from 'src/app/shared/services/current-location.service';
 
 @Component({
   selector: 'weather-five',
@@ -16,7 +16,7 @@ export class WeatherFiveComponent implements OnInit {
   searchCity: string = "";
 
   constructor(
-    private locationService: LocationService,
+    private currLocationService: CurrentLocationService,
     private weatherService: WeatherService,    
   ) { }
 
@@ -35,7 +35,7 @@ export class WeatherFiveComponent implements OnInit {
   }
 
   getLocation() {
-    this.locationService.getLocationService().then(x => {
+    this.currLocationService.getLocationService().then(x => {
       this.myWeather5.lat = x.lat;
       this.myWeather5.lon = x.lon;
       this.getCity(this.myWeather5.lat, this.myWeather5.lon);
@@ -43,7 +43,7 @@ export class WeatherFiveComponent implements OnInit {
   }
 
   getCity(lat: number, lon: number) {
-    this.locationService.getCityService(lat, lon).subscribe({
+    this.currLocationService.getCurrentCityService(lat, lon).subscribe({
       next: (data) => {
         let anyWeather = data;
         // console.log(anyWeather)

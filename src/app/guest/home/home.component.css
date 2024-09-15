@@ -1,9 +1,5 @@
 .my-container {    
-    height: 100%;
-    background-image: url('/assets/images/day.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* background-position: center; */
+    height: 100%;    
     /* border: 2px solid black; */
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LastFound, LastFoundList } from '../model/last-found.model';
+import { LastFound } from '../model/last-found.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,51 +7,44 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class LastFoundService {
 
-  lastFound: LastFound = new LastFound();
+  public lastFounds: LastFound[] = this.getLastFoundsFromLS();
+  private lastFoundsSubject: BehaviorSubject<LastFound[]> = new BehaviorSubject(this.lastFounds);
 
-  public lastFoundList: LastFoundList = this.getLastFoundListFromLocalStorage();
-  private lastFoundListSubject: BehaviorSubject<LastFoundList> = new BehaviorSubject(this.lastFoundList);
-
-  constructor() { }
-
-  addToLastFoundService(lastFound: LastFound): void {
-    
-    let duplicate = this.lastFoundList.list.find(item => item.currentCity === lastFound.currentCity);
+  addToLastFoundsService(lastFound: LastFound): void {
+    let duplicate = this.lastFounds.find(item => item.currentCity == lastFound.currentCity);
     if (duplicate) {
       return;
     }
-    if (this.lastFoundList.list.length <= 4) {
-      this.lastFoundList.list.push(lastFound);
+    if (this.lastFounds.length <= 4) {
+      this.lastFounds.push(lastFound);
     } else {
-      this.lastFoundList.list.splice(0, 1);
-      this.lastFoundList.list.push(lastFound);
+      this.lastFounds.splice(0, 1);
+      this.lastFounds.push(lastFound);
     }
-    this.setLastFoundListToLocalStorage();
-    this.lastFound = new LastFound();
+    this.setLastFoundsToLS();
   }
 
-  getLastFoundListObservable(): Observable<LastFoundList> {
-    return this.lastFoundListSubject.asObservable();
+  getLastFoundsObservable(): Observable<LastFound[]> {
+    return this.lastFoundsSubject.asObservable();
   }
 
-  getLastFoundList(): LastFoundList {
-    return this.lastFoundListSubject.value;
+  getLastFoundsList(): LastFound[] {
+    return this.lastFoundsSubject.value;
   }
 
   clearLastFoundService() {
-    this.lastFoundList = new LastFoundList();
-    this.setLastFoundListToLocalStorage();
+    this.lastFounds = [];
+    this.setLastFoundsToLS();
   }
 
-  private setLastFoundListToLocalStorage(): void {
-    const lastJson = JSON.stringify(this.lastFoundList);
-    localStorage.setItem('last-found', lastJson);
-    // console.log(lastJson)
-    this.lastFoundListSubject.next(this.lastFoundList);
+  private setLastFoundsToLS(): void {
+    const lastsJson = JSON.stringify(this.lastFounds);
+    localStorage.setItem('last-founds', lastsJson);
+    this.lastFoundsSubject.next(this.lastFounds);
   }
 
-  private getLastFoundListFromLocalStorage(): LastFoundList {
-    const lastJson = localStorage.getItem('last-found');
-    return lastJson ? JSON.parse(lastJson) : new LastFoundList();
+  private getLastFoundsFromLS(): LastFound[] {
+    const lastsJson = localStorage.getItem('last-founds');
+    return lastsJson ? JSON.parse(lastsJson) : [];
   }
 }

@@ -7,41 +7,38 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class FavoriteService {
 
-  public favorites: Array<Favorite> = this.getFavoriteListFromLocalStorage();
+  public favorites: Array<Favorite> = this.getFavoritesFromLocalStorage();
   private favoritesSubject: BehaviorSubject<Array<Favorite>> = new BehaviorSubject(this.favorites);
 
   addToFavoriteService(favorite: Favorite): void {
-
     let duplicate = this.favorites.find(item => item.currentCity == favorite.currentCity);
     if (duplicate) {
       return;
     }
     this.favorites.push(favorite);
-    this.setFavoriteListToLocalStorage();
+    this.setFavoritesToLocalStorage();
   }
 
-  getFavoriteListObservable(): Observable<Array<Favorite>> {
+  getFavoritesObservable(): Observable<Array<Favorite>> {
     return this.favoritesSubject.asObservable();
   }
 
-  getFavoriteList(): Array<Favorite> {
+  getFavorites(): Array<Favorite> {
     return this.favoritesSubject.value;
   }
 
-  removeFavoriteCityService(favorite: Favorite) {
-    let newFavoriteList = this.favorites.filter(city => city.currentCity != favorite.currentCity);
-    this.favorites = newFavoriteList;
-    this.setFavoriteListToLocalStorage();
+  removeFavoritesService(favorite: Favorite) {
+    this.favorites = this.favorites.filter(city => city.currentCity != favorite.currentCity);
+    this.setFavoritesToLocalStorage();
   }
 
-  private setFavoriteListToLocalStorage(): void {
+  private setFavoritesToLocalStorage(): void {
     const favJson = JSON.stringify(this.favorites);
     localStorage.setItem('favorites', favJson);
-    // console.log(favJson)
     this.favoritesSubject.next(this.favorites);
   }
 
-  private getFavoriteListFromLocalStorage(): Array<Favorite> {
+  private getFavoritesFromLocalStorage(): Array<Favorite> {
     const favJson = localStorage.getItem('favorites');
     return favJson ? JSON.parse(favJson) : [];
   }

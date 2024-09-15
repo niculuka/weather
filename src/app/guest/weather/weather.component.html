@@ -3,23 +3,24 @@
 
         <div class="back">
             <button routerLink="/">Back</button>
+            <button (click)="resetCurrentLocation()">RESET</button>
 
             <div class="favorite">
                 <button>Favorites</button>
                 <div class="favorite-list">
-                    <!-- <table>
+                    <table>
                         <thead>
                             <tr *ngIf="favorites.length<=0">
                                 <th colspan="4"> - - - empty list - - -</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of favorites; index as ind">
-                                <td (click)="getFavoriteCity(item)">{{ind+1}}</td>
-                                <td (click)="getFavoriteCity(item)">
+                            <tr *ngFor="let item of favorites; index as ind" (click)="getFavoriteCity(item)">
+                                <td>{{ind+1}}</td>
+                                <td>
                                     {{item.currentCity}}
                                 </td>
-                                <td (click)="getFavoriteCity(item)">
+                                <td>
                                     {{item.temperature | number: "1.0-0"}}° C
                                 </td>
                                 <th style="text-align: right;" (click)="removeFavoriteCity(item)">
@@ -27,7 +28,7 @@
                                 </th>
                             </tr>
                         </tbody>
-                    </table> -->
+                    </table>
                 </div>
             </div>
 
@@ -80,21 +81,21 @@
             <!-- HISTORY --------------------------------------------------------------------------------- -->
             <div class="bookmark" *ngIf="myWeather1.currentCity">
 
-                <!-- <table>
+                <table>
                     <thead>
                         <tr class="history-head">
                             <th colspan="5" style="text-align: left;">History</th>
                             <th style="text-align: right;">
                                 <img class="close-svg down-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white"
-                                    (click)="clearFavoritesList()">
+                                    (click)="clearHistory()">
                             </th>
                         </tr>
-                        <tr *ngIf="lastFoundList.list.length<=0">
+                        <tr *ngIf="lastFounds.length<=0">
                             <th colspan="8"> - - - empty list - - -</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lastFoundList.list; index as ind" (click)="getLastFound(item)">
+                        <tr *ngFor="let item of lastFounds; index as ind" (click)="getLastFound(item)">
                             <td>{{ind+1}}</td>
                             <td>
                                 {{item.currentCity}}
@@ -113,7 +114,7 @@
                             </td>
                         </tr>
                     </tbody>
-                </table> -->
+                </table>
 
 
             </div>

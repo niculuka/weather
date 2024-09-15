@@ -30,7 +30,7 @@ import { WeatherFiveComponent } from './guest/weather-five/weather-five.componen
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {
-        duration: 3000, verticalPosition: 'top'
+        duration: 3000, verticalPosition: 'bottom'
       }
     }
   ],
