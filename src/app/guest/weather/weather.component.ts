@@ -17,12 +17,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class WeatherComponent implements OnInit, OnDestroy {
   myWeather1: Weather1 = new Weather1();
   searchCity: string = "";
+  currentCity: any = "";
 
   favorite: Favorite = new Favorite();
-  favorites: Array<Favorite> = [];
+  favorites: Favorite[] = [];
 
   lastFound: LastFound = new LastFound();
-  lastFounds: Array<LastFound> = [];
+  lastFounds: LastFound[] = [];
+  displayReverse: LastFound[] = [];
 
   private sub0: any;
   private sub1: any;
@@ -40,10 +42,9 @@ export class WeatherComponent implements OnInit, OnDestroy {
   ) {
     this.sub0 = favoriteService.getFavoritesObservable().subscribe(data => {
       this.favorites = data;
-      console.log(this.favorites)
     });
     this.sub1 = lastFoundService.getLastFoundsObservable().subscribe(data => {
-      this.lastFounds = data;
+      this.lastFounds = JSON.parse(JSON.stringify(data)).reverse();
     });
 
   }
@@ -58,6 +59,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
       else {
         this.sub3 = this.currLocationService.getCurrentCityService(this.myWeather1.lat, this.myWeather1.lon).subscribe({
           next: (data) => {
+            this.currentCity = data.name;
             this.getWeather(data.name);
           },
           error: (error) => {
@@ -83,7 +85,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
         this.myWeather1.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather1.iconCode + '@2x.png';
         this.myWeather1.backgroundImage = this.wallpaperService.getWallpaper(this.myWeather1.iconCode);
         this.isFavorite();
-        // this.addToLastFound(this.myWeather)
+        this.addToLastsFound();
       },
       error: (error) => {
         this.matSnackBar.open("NOT CITY FOUND!", 'OK');
@@ -95,6 +97,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
   search() {
     if (this.searchCity.length >= 3) {
       this.getWeather(this.searchCity);
+      this.searchCity = "";
     }
     else {
       this.matSnackBar.open("INSERT MIN 3 CHARS!", 'OK');
@@ -105,9 +108,13 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.currLocationService.resetCurrentLocationService();
   }
 
+  isCurrentCity() {
+    return this.currentCity == this.myWeather1.currentCity;
+  }
+
   // FAVORITES ----------------------------------------------------------------------------
   setFavorite(item: Weather1) {
-    if (this.favorites.length > 4 && !item.favorite) {
+    if (this.favorites.length >= 5 && !item.favorite) {
       this.matSnackBar.open("MAXIM 5 FAVORITES CITIES!", 'OK');
       return;
     }
@@ -139,16 +146,18 @@ export class WeatherComponent implements OnInit, OnDestroy {
 
   removeFavoriteCity(item: Favorite) {
     this.favoriteService.removeFavoritesService(item);
+    this.isFavorite();
   }
 
   // HISTORY ----------------------------------------------------------------------------
-  addToLastFound(item: Weather1) {
+  addToLastsFound() {
+    if (this.currentCity == this.myWeather1.currentCity) return;
     this.lastFound = new LastFound();
-    this.lastFound.currentCity = item.currentCity;
-    this.lastFound.humidity = item.humidity;
-    this.lastFound.pressure = item.pressure;
-    this.lastFound.summary = item.summary;
-    this.lastFound.temperature = item.temperature;
+    this.lastFound.currentCity = this.myWeather1.currentCity;
+    this.lastFound.humidity = this.myWeather1.humidity;
+    this.lastFound.pressure = this.myWeather1.pressure;
+    this.lastFound.temperature = this.myWeather1.temperature;
+    this.lastFound.summary = this.myWeather1.summary;
     this.lastFoundService.addToLastFoundsService(this.lastFound)
   }
 
@@ -157,10 +166,11 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.search();
   }
 
-  clearHistory() {
+  clearLastFound() {
     this.lastFoundService.clearLastFoundService();
   }
 
+  // DESTROY ----------------------------------------------------------------------------
   ngOnDestroy(): void {
     this.sub0?.unsubscribe();
     this.sub1?.unsubscribe();

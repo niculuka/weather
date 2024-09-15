@@ -12,9 +12,7 @@ export class FavoriteService {
 
   addToFavoriteService(favorite: Favorite): void {
     let duplicate = this.favorites.find(item => item.currentCity == favorite.currentCity);
-    if (duplicate) {
-      return;
-    }
+    if (duplicate) return;
     this.favorites.push(favorite);
     this.setFavoritesToLocalStorage();
   }

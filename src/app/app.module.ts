@@ -11,12 +11,13 @@ import { HomeComponent } from './guest/home/home.component';
 import { WeatherComponent } from './guest/weather/weather.component';
 import { WeatherFiveComponent } from './guest/weather-five/weather-five.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     WeatherComponent,
     WeatherFiveComponent,
-    HomeComponent,
   ],
   imports: [
     BrowserModule,

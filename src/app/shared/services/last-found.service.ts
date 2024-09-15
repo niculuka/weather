@@ -12,12 +12,9 @@ export class LastFoundService {
 
   addToLastFoundsService(lastFound: LastFound): void {
     let duplicate = this.lastFounds.find(item => item.currentCity == lastFound.currentCity);
-    if (duplicate) {
-      return;
-    }
-    if (this.lastFounds.length <= 4) {
-      this.lastFounds.push(lastFound);
-    } else {
+    if (duplicate) return;
+    if (this.lastFounds.length < 5) this.lastFounds.push(lastFound);
+    else {
       this.lastFounds.splice(0, 1);
       this.lastFounds.push(lastFound);
     }
@@ -38,13 +35,13 @@ export class LastFoundService {
   }
 
   private setLastFoundsToLS(): void {
-    const lastsJson = JSON.stringify(this.lastFounds);
-    localStorage.setItem('last-founds', lastsJson);
+    const lastJson = JSON.stringify(this.lastFounds);
+    localStorage.setItem('last-founds', lastJson);
     this.lastFoundsSubject.next(this.lastFounds);
   }
 
   private getLastFoundsFromLS(): LastFound[] {
-    const lastsJson = localStorage.getItem('last-founds');
-    return lastsJson ? JSON.parse(lastsJson) : [];
+    const lastJson = localStorage.getItem('last-founds');
+    return lastJson ? JSON.parse(lastJson) : [];
   }
 }

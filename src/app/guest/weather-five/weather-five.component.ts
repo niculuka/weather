@@ -46,7 +46,6 @@ export class WeatherFiveComponent implements OnInit {
     this.currLocationService.getCurrentCityService(lat, lon).subscribe({
       next: (data) => {
         let anyWeather = data;
-        // console.log(anyWeather)
         this.myWeather5.localCity = anyWeather.name;
         this.myWeather5.currentCity = anyWeather.name;
         this.get5DaysWeather();

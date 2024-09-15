@@ -1,9 +1,16 @@
 <div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather1.backgroundImage + ')'}">
-    <div class="my-content">
 
-        <div class="back">
+    <div class="toolbar-container">
+        <div class="toolbar-content">
             <button routerLink="/">Back</button>
-            <button (click)="resetCurrentLocation()">RESET</button>
+
+            <!-- SEARCH BAR --------------------------------------------------------------------------------- -->
+            <div class="search">
+                <form #form="ngForm" (submit)="search()">
+                    <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
+                    <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="search()">
+                </form>
+            </div>
 
             <div class="favorite">
                 <button>Favorites</button>
@@ -33,16 +40,10 @@
             </div>
 
         </div>
+    </div>
 
+    <div class="my-content">
         <div class="content">
-
-            <!-- SEARCH BAR --------------------------------------------------------------------------------- -->
-            <div class="search">
-                <form #form="ngForm" (submit)="search()">
-                    <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
-                    <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="search()">
-                </form>
-            </div>
 
             <!-- WAINTING FOR API RESPONSE ------------------------------------------------------------------ -->
             <div class="waiting">
@@ -76,7 +77,9 @@
                     <p>Humidity: {{myWeather1.humidity}} %</p>
                 </div>
 
+                <a *ngIf="isCurrentCity()" (click)="resetCurrentLocation()">Reset Current Location</a>
             </div>
+
 
             <!-- HISTORY --------------------------------------------------------------------------------- -->
             <div class="bookmark" *ngIf="myWeather1.currentCity">
@@ -87,7 +90,7 @@
                             <th colspan="5" style="text-align: left;">History</th>
                             <th style="text-align: right;">
                                 <img class="close-svg down-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white"
-                                    (click)="clearHistory()">
+                                    (click)="clearLastFound()">
                             </th>
                         </tr>
                         <tr *ngIf="lastFounds.length<=0">

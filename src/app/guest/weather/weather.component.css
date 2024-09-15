@@ -6,21 +6,30 @@
     /* border: 2px solid black; */
 }
 
-.my-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    /* border: 2px solid black; */
+.toolbar-container {
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
-.back {
+.toolbar-content {
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    height: 100%;
     max-width: 1500px;
+    margin: auto;
+    /* border: 2px solid red; */
+}
+
+.my-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    /* border: 2px solid black; */
 }
 
 button {
@@ -40,6 +49,25 @@ button:hover {
 
 button:hover+.favorite-list {
     display: block;
+}
+
+.search form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+    height: 100%;
+    border: none;
+    border-radius: 50px;
+    background: white;
+}
+
+.search input {
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    background: none;
+    border: none;
 }
 
 .favorite-list {
@@ -65,26 +93,6 @@ button:hover+.favorite-list {
     /* border: 2px solid black; */
 }
 
-.search form {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 12px;
-    height: 100%;
-    border: none;
-    border-radius: 50px;
-    background: white;
-}
-
-.search input {
-    font-size: 16px;
-    width: 100%;
-    outline: none;
-    background: none;
-    border: none;
-}
-
 .card {
     position: relative;
     display: flex;
@@ -98,6 +106,15 @@ button:hover+.favorite-list {
     box-shadow: 0px 6px 10px 0px rgba(62, 62, 62, 0.2);
     border-radius: 20px;
     /* border: 2px solid grey; */
+}
+
+.card a {
+    color: white;
+    /* border: 2px solid red; */
+}
+
+.card a:hover {
+    font-weight: 600;
 }
 
 .heart {
