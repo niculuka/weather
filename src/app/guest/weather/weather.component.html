@@ -1,4 +1,4 @@
-<div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather1.backgroundImage + ')'}">
+<div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather1.background + ')'}">
 
     <div class="toolbar-container">
         <div class="toolbar-content">
@@ -12,6 +12,7 @@
                 </form>
             </div>
 
+            <!-- FAVORITES --------------------------------------------------------------------------------- -->
             <div class="favorite">
                 <button>Favorites</button>
                 <div class="favorite-list">
@@ -65,16 +66,19 @@
                     <div class="temperature">
                         {{myWeather1.temperature | number: "1.0-0"}}° C
                     </div>
-                    <img src={{myWeather1.iconURL}} alt={{myWeather1.iconURL}}>
+                    <p>Feels like: {{myWeather1.feelsLike | number: "1.0-0"}}° C</p>
+                    <img src="https://openweathermap.org/img/wn/{{myWeather1.icon}}@2x.png" alt="icon">
                     <p class="summary">{{myWeather1.summary}}</p>
                 </div>
 
                 <hr>
 
                 <div class="details">
-                    <p>Feels like: {{myWeather1.feelsLike | number: "1.0-0"}}° C</p>
-                    <p>Presure: {{myWeather1.pressure}} hPa</p>
+                    <p>Presure: {{myWeather1.pressure * 0.750061683 | number: "1.0-0"}} mmHg</p>
                     <p>Humidity: {{myWeather1.humidity}} %</p>
+                    <p>
+                        Max/Min: {{myWeather1.tempMax | number: "1.0-0"}}° / {{myWeather1.tempMin | number: "1.0-0"}}° C
+                    </p>
                 </div>
 
                 <a *ngIf="isCurrentCity()" (click)="resetCurrentLocation()">Reset Current Location</a>

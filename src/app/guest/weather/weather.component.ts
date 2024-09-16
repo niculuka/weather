@@ -74,14 +74,15 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.sub4 = this.weatherService.getWeatherService(city).subscribe({
       next: (data) => {
         this.myWeather1.currentCity = data.name;
+        this.myWeather1.temperature = data.main.temp;
         this.myWeather1.feelsLike = data.main.feels_like;
+        this.myWeather1.tempMax = data.main.temp_max;
+        this.myWeather1.tempMin = data.main.temp_min;
         this.myWeather1.humidity = data.main.humidity;
         this.myWeather1.pressure = data.main.pressure;
-        this.myWeather1.temperature = data.main.temp;
         this.myWeather1.summary = data.weather[0].main;
-        this.myWeather1.iconCode = data.weather[0].icon;
-        this.myWeather1.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather1.iconCode + '@2x.png';
-        this.myWeather1.backgroundImage = this.wallpaperService.getWallpaper(this.myWeather1.iconCode);
+        this.myWeather1.icon = data.weather[0].icon;
+        this.myWeather1.background = this.wallpaperService.getWallpaper(this.myWeather1.icon);
         this.searchCity = "";
         this.isFavorite();
         this.addToLastsFound();

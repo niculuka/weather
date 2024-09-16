@@ -3,6 +3,7 @@ import { WeatherService } from '../../shared/services/weather.service';
 import { Weather } from '../../shared/model/weather.model';
 import { CurrentLocationService } from 'src/app/shared/services/current-location.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WallpaperService } from 'src/app/shared/services/wallpaper.service';
 
 @Component({
   selector: 'weather-five',
@@ -23,6 +24,7 @@ export class WeatherFiveComponent implements OnInit, OnDestroy {
   constructor(
     private currLocationService: CurrentLocationService,
     private weatherService: WeatherService,
+    private wallpaperService: WallpaperService,
     private matSnackBar: MatSnackBar
   ) { }
 
@@ -55,59 +57,30 @@ export class WeatherFiveComponent implements OnInit, OnDestroy {
         console.log(data)
         this.myWeather5.currentCity = data.city.name;
         this.myWeather5.list = data.list;
-
-
-        this.getWallpaper();
-        
+        this.myWeather5.icon = data.list[0].weather[0].icon;
+        this.myWeather5.background = this.wallpaperService.getWallpaper(this.myWeather5.icon);
+        this.searchCity = "";
       },
       error: (error) => {
+        this.matSnackBar.open("NOT CITY FOUND!", 'OK');
         console.log(error);
-        alert("CITY NOT FOUND!");
       }
     })
   }
 
-  onSubmit() {
-    // if (!this.searchCity) {
-    //   alert("NO CITY CHOOSE!");
-    // } else {
-    //   this.get5DaysWeather();
-    //   this.searchCity = "";
-    // }
+  search() {
+    if (this.searchCity.length >= 3) {
+      this.get5DaysWeather(this.searchCity);
+    }
+    else {
+      this.matSnackBar.open("INSERT MIN 3 CHARS!", 'OK');
+    }
   }
 
-  getWallpaper() {
-    switch (this.myWeather5.iconCode) {
-      case "01d": this.myWeather5.backgroundImage = "assets/images/day01.jpg";
-        break;
-      case "02d": this.myWeather5.backgroundImage = "assets/images/day02.jpg";
-        break;
-      case "03d": this.myWeather5.backgroundImage = "assets/images/day03.jpg";
-        break;
-      case "04d": this.myWeather5.backgroundImage = "assets/images/day04.jpg";
-        break;
-      case "09d": this.myWeather5.backgroundImage = "assets/images/day09.jpg";
-        break;
-      case "10d": this.myWeather5.backgroundImage = "assets/images/day10.jpg";
-        break;
-      case "11d": this.myWeather5.backgroundImage = "assets/images/day11.jpg";
-        break;
-      case "13d": this.myWeather5.backgroundImage = "assets/images/day13.jpg";
-        break;
-      case "50d": this.myWeather5.backgroundImage = "assets/images/day50.jpg";
-        break;
-      case "01n": this.myWeather5.backgroundImage = "assets/images/night.jpg";
-        break;
-      default:
-        this.myWeather5.backgroundImage = "assets/images/day.jpg";
-    }
-    // console.log(this.myWeather5.iconCode)
+  // DESTROY ----------------------------------------------------------------------------
+  ngOnDestroy(): void {
+    this.sub0?.unsubscribe();
+    this.sub1?.unsubscribe();
+    this.sub2?.unsubscribe();
   }
-
-    // DESTROY ----------------------------------------------------------------------------
-    ngOnDestroy(): void {
-      this.sub0?.unsubscribe();
-      this.sub1?.unsubscribe();
-      this.sub2?.unsubscribe();
-    }
 }

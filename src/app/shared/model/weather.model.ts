@@ -5,20 +5,20 @@ export class Weather {
     currentCity: string = "";
     favorite: boolean = false;
 
-    list: any = [];
-
+    temperature: number = 0;
     feelsLike: number = 0;
+    tempMax: number = 0;
+    tempMin: number = 0;
+    
     humidity: number = 0;
     pressure: number = 0;
-    temperature: number = 0;
-    summary: string = "";
 
-    day: string = "";
-    night: string = "";
-    rain: string = "";
-    iconCode: string = "";
-    iconURL: string = "";
-    backgroundImage: string = "";
+    summary: string = "";
+    icon: string = "";
+
+    background: string = "";
+
+    list: any = [];
 }
 
 

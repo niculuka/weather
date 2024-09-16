@@ -1,4 +1,4 @@
-<div class="container" [ngStyle]="{'background-image': 'url(/' + myWeather5.backgroundImage + ')'}">
+<div class="container" [ngStyle]="{'background-image': 'url(/' + myWeather5.background + ')'}">
 
     <div class="back">
         <button routerLink="/">Back</button>
@@ -7,9 +7,9 @@
     <div class="content">
 
         <div class="search">
-            <form #form="ngForm" (submit)="onSubmit()">
+            <form #form="ngForm" (submit)="search()">
                 <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
-                <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="onSubmit()">
+                <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="search()">
             </form>
         </div>
 
@@ -21,22 +21,25 @@
 
         <div class="cards" *ngIf="myWeather5.currentCity">
 
-            <div class="card" *ngFor="let item of myWeather5.list">
+            <div class="card" *ngFor="let card of myWeather5.list">
 
-                <div class="time">{{item.dt_txt}}</div>
+                <div class="time">{{card.dt_txt}}</div>
 
-                <div class="temperature">{{item.main?.temp | number: "1.0-0"}}° C</div>
-                <div class="main" *ngFor="let i of item.weather">
-                    <img src="https://openweathermap.org/img/wn/{{i.icon}}@2x.png" alt="icon">
-                    <p>{{i.main}}</p>
+                <div class="temperature">{{card.main?.temp | number: "1.0-0"}}° C</div>
+                <div class="main" *ngFor="let wth of card.weather">
+                    <img src="https://openweathermap.org/img/wn/{{wth.icon}}@2x.png" alt="icon">
+                    <p>{{wth.main}}</p>
                 </div>
 
                 <div class="details">
-                    <div>Humidity: {{item.main?.humidity}} %</div>
-                    <div>Pressure: {{item.main?.pressure}} hPa</div>
+                    <div>Pressure: {{card.main?.pressure * 0.750061683 | number: "1.0-0"}} mmHg</div>
+                    <div>Humidity: {{card.main?.humidity}} %</div>
                     <div class="max-min">
                         <div>
-                            Max/Min: {{item.main?.temp_max | number: "1.0-0"}}° / {{item.main?.temp_min | number:
+                            Feels like: {{card.main?.feels_like | number: "1.0-0"}}° C
+                        </div>
+                        <div>
+                            Max/Min: {{card.main?.temp_max | number: "1.0-0"}}° / {{card.main?.temp_min | number:
                             "1.0-0"}}° C
                         </div>
                     </div>
