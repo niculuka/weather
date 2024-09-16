@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { LastFound } from '../model/last-found.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Weather } from '../model/weather.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LastFoundService {
 
-  public lastFounds: LastFound[] = this.getLastFoundsFromLS();
-  private lastFoundsSubject: BehaviorSubject<LastFound[]> = new BehaviorSubject(this.lastFounds);
+  public lastFounds: Weather[] = this.getLastFoundsFromLS();
+  private lastFoundsSubject: BehaviorSubject<Weather[]> = new BehaviorSubject(this.lastFounds);
 
-  addToLastFoundsService(lastFound: LastFound): void {
+  addToLastFoundsService(lastFound: Weather): void {
     let duplicate = this.lastFounds.find(item => item.currentCity == lastFound.currentCity);
     if (duplicate) return;
     if (this.lastFounds.length < 5) this.lastFounds.push(lastFound);
@@ -21,11 +21,11 @@ export class LastFoundService {
     this.setLastFoundsToLS();
   }
 
-  getLastFoundsObservable(): Observable<LastFound[]> {
+  getLastFoundsObservable(): Observable<Weather[]> {
     return this.lastFoundsSubject.asObservable();
   }
 
-  getLastFoundsList(): LastFound[] {
+  getLastFoundsList(): Weather[] {
     return this.lastFoundsSubject.value;
   }
 
@@ -40,7 +40,7 @@ export class LastFoundService {
     this.lastFoundsSubject.next(this.lastFounds);
   }
 
-  private getLastFoundsFromLS(): LastFound[] {
+  private getLastFoundsFromLS(): Weather[] {
     const lastJson = localStorage.getItem('last-founds');
     return lastJson ? JSON.parse(lastJson) : [];
   }

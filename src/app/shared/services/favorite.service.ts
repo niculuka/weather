@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Favorite } from '../model/favorite.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Weather } from '../model/weather.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoriteService {
 
-  public favorites: Array<Favorite> = this.getFavoritesFromLocalStorage();
-  private favoritesSubject: BehaviorSubject<Array<Favorite>> = new BehaviorSubject(this.favorites);
+  public favorites: Array<Weather> = this.getFavoritesFromLocalStorage();
+  private favoritesSubject: BehaviorSubject<Array<Weather>> = new BehaviorSubject(this.favorites);
 
-  addToFavoriteService(favorite: Favorite): void {
+  addToFavoriteService(favorite: Weather): void {
     let duplicate = this.favorites.find(item => item.currentCity == favorite.currentCity);
     if (duplicate) return;
     this.favorites.push(favorite);
     this.setFavoritesToLocalStorage();
   }
 
-  getFavoritesObservable(): Observable<Array<Favorite>> {
+  getFavoritesObservable(): Observable<Array<Weather>> {
     return this.favoritesSubject.asObservable();
   }
 
-  getFavorites(): Array<Favorite> {
+  getFavorites(): Array<Weather> {
     return this.favoritesSubject.value;
   }
 
-  removeFavoritesService(favorite: Favorite) {
+  removeFavoritesService(favorite: Weather) {
     this.favorites = this.favorites.filter(city => city.currentCity != favorite.currentCity);
     this.setFavoritesToLocalStorage();
   }
@@ -36,7 +36,7 @@ export class FavoriteService {
     this.favoritesSubject.next(this.favorites);
   }
 
-  private getFavoritesFromLocalStorage(): Array<Favorite> {
+  private getFavoritesFromLocalStorage(): Array<Weather> {
     const favJson = localStorage.getItem('favorites');
     return favJson ? JSON.parse(favJson) : [];
   }

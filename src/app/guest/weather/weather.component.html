@@ -98,8 +98,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lastFounds; index as ind" (click)="getLastFound(item)">
-                            <td>{{ind+1}}</td>
+                        <tr *ngFor="let item of lastFounds;" (click)="getLastFound(item)">
                             <td>
                                 {{item.currentCity}}
                             </td>

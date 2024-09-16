@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from '../../shared/services/weather.service';
-import { Weather1 } from 'src/app/shared/model/weather1.model';
-import { LastFound } from '../../shared/model/last-found.model';
+import { Weather } from 'src/app/shared/model/weather.model';
 import { LastFoundService } from '../../shared/services/last-found.service';
-import { Favorite } from '../../shared/model/favorite.model';
 import { FavoriteService } from '../../shared/services/favorite.service';
 import { CurrentLocationService } from 'src/app/shared/services/current-location.service';
 import { WallpaperService } from 'src/app/shared/services/wallpaper.service';
@@ -15,16 +13,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit, OnDestroy {
-  myWeather1: Weather1 = new Weather1();
-  searchCity: string = "";
+  myWeather1: Weather = new Weather();
+
   currentCity: any = "";
+  searchCity: string = "";
 
-  favorite: Favorite = new Favorite();
-  favorites: Favorite[] = [];
+  favorite: Weather = new Weather();
+  favorites: Weather[] = [];
 
-  lastFound: LastFound = new LastFound();
-  lastFounds: LastFound[] = [];
-  displayReverse: LastFound[] = [];
+  lastFound: Weather = new Weather();
+  lastFounds: Weather[] = [];
 
   private sub0: any;
   private sub1: any;
@@ -84,6 +82,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
         this.myWeather1.iconCode = data.weather[0].icon;
         this.myWeather1.iconURL = 'https://openweathermap.org/img/wn/' + this.myWeather1.iconCode + '@2x.png';
         this.myWeather1.backgroundImage = this.wallpaperService.getWallpaper(this.myWeather1.iconCode);
+        this.searchCity = "";
         this.isFavorite();
         this.addToLastsFound();
       },
@@ -97,7 +96,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
   search() {
     if (this.searchCity.length >= 3) {
       this.getWeather(this.searchCity);
-      this.searchCity = "";
     }
     else {
       this.matSnackBar.open("INSERT MIN 3 CHARS!", 'OK');
@@ -113,13 +111,13 @@ export class WeatherComponent implements OnInit, OnDestroy {
   }
 
   // FAVORITES ----------------------------------------------------------------------------
-  setFavorite(item: Weather1) {
+  setFavorite(item: Weather) {
     if (this.favorites.length >= 5 && !item.favorite) {
       this.matSnackBar.open("MAXIM 5 FAVORITES CITIES!", 'OK');
       return;
     }
     item.favorite = !item.favorite;
-    this.favorite = new Favorite();
+    this.favorite = new Weather();
     this.favorite.currentCity = item.currentCity;
     this.favorite.temperature = item.temperature;
     if (item.favorite) {
@@ -139,12 +137,11 @@ export class WeatherComponent implements OnInit, OnDestroy {
     }
   }
 
-  getFavoriteCity(item: Favorite) {
-    this.searchCity = item.currentCity;
-    this.search();
+  getFavoriteCity(item: Weather) {
+    this.getWeather(item.currentCity);
   }
 
-  removeFavoriteCity(item: Favorite) {
+  removeFavoriteCity(item: Weather) {
     this.favoriteService.removeFavoritesService(item);
     this.isFavorite();
   }
@@ -152,7 +149,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
   // HISTORY ----------------------------------------------------------------------------
   addToLastsFound() {
     if (this.currentCity == this.myWeather1.currentCity) return;
-    this.lastFound = new LastFound();
+    this.lastFound = new Weather();
     this.lastFound.currentCity = this.myWeather1.currentCity;
     this.lastFound.humidity = this.myWeather1.humidity;
     this.lastFound.pressure = this.myWeather1.pressure;
@@ -161,9 +158,8 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.lastFoundService.addToLastFoundsService(this.lastFound)
   }
 
-  getLastFound(item: LastFound) {
-    this.searchCity = item.currentCity;
-    this.search();
+  getLastFound(item: Weather) {
+    this.getWeather(item.currentCity);
   }
 
   clearLastFound() {

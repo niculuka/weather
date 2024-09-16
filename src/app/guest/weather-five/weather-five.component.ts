@@ -1,81 +1,79 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from '../../shared/services/weather.service';
-import { Weather5 } from '../../shared/model/weather5.model';
+import { Weather } from '../../shared/model/weather.model';
 import { CurrentLocationService } from 'src/app/shared/services/current-location.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'weather-five',
   templateUrl: './weather-five.component.html',
   styleUrls: ['./weather-five.component.css']
 })
-export class WeatherFiveComponent implements OnInit {
+export class WeatherFiveComponent implements OnInit, OnDestroy {
 
-  image: string = "assets/images/day.jpg"
+  myWeather5: Weather = new Weather();
 
-  myWeather5: Weather5 = new Weather5();
+  currentCity: any = "";
   searchCity: string = "";
+
+  private sub0: any;
+  private sub1: any;
+  private sub2: any;
 
   constructor(
     private currLocationService: CurrentLocationService,
-    private weatherService: WeatherService,    
+    private weatherService: WeatherService,
+    private matSnackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.getLocation();
-    // this.get5DaysWeather();
-  }
-
-  onSubmit() {
-    if (!this.searchCity) {
-      alert("NO CITY CHOOSE!");
-    } else {
-      this.get5DaysWeather();
-      this.searchCity = "";
-    }
-  }
-
-  getLocation() {
-    this.currLocationService.getLocationService().then(x => {
-      this.myWeather5.lat = x.lat;
-      this.myWeather5.lon = x.lon;
-      this.getCity(this.myWeather5.lat, this.myWeather5.lon);
-    })
-  }
-
-  getCity(lat: number, lon: number) {
-    this.currLocationService.getCurrentCityService(lat, lon).subscribe({
-      next: (data) => {
-        let anyWeather = data;
-        this.myWeather5.localCity = anyWeather.name;
-        this.myWeather5.currentCity = anyWeather.name;
-        this.get5DaysWeather();
-      },
-      error: (error) => {
-        console.log(error)
+    this.sub0 = this.currLocationService.getCurrentLocationObservable().subscribe(data => {
+      this.myWeather5.lat = data.lat;
+      this.myWeather5.lon = data.lon;
+      if (this.myWeather5.lat == 0 || this.myWeather5.lon == 0) {
+        this.currLocationService.getLocationService();
       }
-    })
+      else {
+        this.sub1 = this.currLocationService.getCurrentCityService(this.myWeather5.lat, this.myWeather5.lon).subscribe({
+          next: (data) => {
+            this.currentCity = data.name;
+            this.get5DaysWeather(data.name);
+          },
+          error: (error) => {
+            this.matSnackBar.open("SERVER ERROR!", 'OK');
+            console.log(error);
+          }
+        })
+      }
+    });
   }
 
-  get5DaysWeather() {
-    if (!this.searchCity) {
-      this.myWeather5.lastCity = this.myWeather5.currentCity;
-    } else {
-      this.myWeather5.lastCity = this.searchCity;
-    }
-    this.weatherService.get5DaysWeatherService(this.myWeather5.lastCity).subscribe({
+  // WEATHER 5 --------------------------------------------------------------------------
+  get5DaysWeather(city: string) {
+    this.sub2 = this.weatherService.get5DaysWeatherService(city).subscribe({
       next: (data: any) => {
-        this.myWeather5 = data;
-        this.myWeather5.currentCity = this.myWeather5.city.name;
-        let aaa: any = this.myWeather5.list[0].weather;
-        // console.log(aaa[0].icon)
-        this.myWeather5.iconCode = aaa[0].icon;
+        console.log(data)
+        this.myWeather5.currentCity = data.city.name;
+        this.myWeather5.list = data.list;
+
+
         this.getWallpaper();
+        
       },
       error: (error) => {
         console.log(error);
         alert("CITY NOT FOUND!");
       }
     })
+  }
+
+  onSubmit() {
+    // if (!this.searchCity) {
+    //   alert("NO CITY CHOOSE!");
+    // } else {
+    //   this.get5DaysWeather();
+    //   this.searchCity = "";
+    // }
   }
 
   getWallpaper() {
@@ -106,4 +104,10 @@ export class WeatherFiveComponent implements OnInit {
     // console.log(this.myWeather5.iconCode)
   }
 
+    // DESTROY ----------------------------------------------------------------------------
+    ngOnDestroy(): void {
+      this.sub0?.unsubscribe();
+      this.sub1?.unsubscribe();
+      this.sub2?.unsubscribe();
+    }
 }

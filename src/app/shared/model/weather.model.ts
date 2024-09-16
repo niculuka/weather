@@ -1,9 +1,11 @@
-export class Weather1 {
+export class Weather {
     lat: number = 0;
     lon: number = 0;
 
     currentCity: string = "";
     favorite: boolean = false;
+
+    list: any = [];
 
     feelsLike: number = 0;
     humidity: number = 0;
