@@ -1,10 +1,15 @@
 <div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather1.background + ')'}">
 
+    <!-- T O O L B A R =================================================================================== -->
     <div class="toolbar-container">
         <div class="toolbar-content">
-            <button routerLink="/">Back</button>
 
-            <!-- SEARCH BAR --------------------------------------------------------------------------------- -->
+            <!-- HOME ------------------------------------------------------------------------ -->
+            <div class="home">
+                <a routerLink="/">Back</a>
+            </div>
+
+            <!-- SEARCH BAR ------------------------------------------------------------------ -->
             <div class="search">
                 <form #form="ngForm" (submit)="search()">
                     <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
@@ -12,10 +17,10 @@
                 </form>
             </div>
 
-            <!-- FAVORITES --------------------------------------------------------------------------------- -->
-            <div class="favorite">
-                <button>Favorites</button>
-                <div class="favorite-list">
+            <!-- FAVORITES ------------------------------------------------------------------- -->
+            <div class="favorites">
+                <a>Favorites</a>
+                <div class="dropdown-fav">
                     <table>
                         <thead>
                             <tr *ngIf="favorites.length<=0">
@@ -24,16 +29,12 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of favorites; index as ind" (click)="getFavoriteCity(item)">
-                                <td>{{ind+1}}</td>
-                                <td>
-                                    {{item.currentCity}}
+                                <td> {{ind+1}} </td>
+                                <td> {{item.currentCity}} </td>
+                                <td> {{item.temperature | number: "1.0-0"}}° C </td>
+                                <td (click)="removeFavoriteCity(item)">
+                                    <img  src="/assets/svgs/x-lg-white.svg" alt="close">
                                 </td>
-                                <td>
-                                    {{item.temperature | number: "1.0-0"}}° C
-                                </td>
-                                <th style="text-align: right;" (click)="removeFavoriteCity(item)">
-                                    <img class="close-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white">
-                                </th>
                             </tr>
                         </tbody>
                     </table>
@@ -43,15 +44,16 @@
         </div>
     </div>
 
+    <!-- B O D Y ========================================================================================= -->
     <div class="my-content">
         <div class="content">
 
-            <!-- WAINTING FOR API RESPONSE ------------------------------------------------------------------ -->
+            <!-- WAINTING . . . ------------------------------------------------------------------ -->
             <div class="waiting">
                 <h1 style="color: white" *ngIf="!myWeather1.currentCity">Waiting...</h1>
             </div>
 
-            <!-- C A R D ------------------------------------------------------------------------------------ -->
+            <!-- C A R D ------------------------------------------------------------------------- -->
             <div class="card" *ngIf="myWeather1.currentCity">
                 <div>
                     <h1>{{myWeather1.currentCity}}</h1>
@@ -81,11 +83,11 @@
                     </p>
                 </div>
 
-                <a *ngIf="isCurrentCity()" (click)="resetCurrentLocation()">Reset Current Location</a>
+                <p *ngIf="isCurrentCity()" (click)="resetCurrentLocation()">Reset Current Location</p>
             </div>
 
 
-            <!-- HISTORY --------------------------------------------------------------------------------- -->
+            <!-- HISTORY -------------------------------------------------------------------------- -->
             <div class="bookmark" *ngIf="myWeather1.currentCity">
 
                 <table>
@@ -116,12 +118,11 @@
                                 {{item.humidity}}%
                             </td>
                             <td>
-                                {{item.pressure}} hPa
+                                {{item.pressure * 0.750061683 | number: "1.0-0"}} mmHg
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
 
             </div>
         </div>
