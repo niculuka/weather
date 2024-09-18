@@ -6,7 +6,8 @@
     /* border: 2px solid black; */
 }
 
-/* T O O L B A R ======================================== */
+/* T O O L B A R ======================================= */
+/* ===================================================== */
 .toolbar-container {
     width: 100%;
     height: 10%;
@@ -60,6 +61,11 @@
     display: inline-block;
 }
 
+.home,
+.favorites {
+    margin: 0 14px;
+}
+
 .home a,
 .favorites a {
     padding: 16px 30px;
@@ -94,8 +100,15 @@ table {
     background: rgba(0, 0, 0, 0.3);
 }
 
-tr {
+thead tr {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+tbody tr {
     cursor: pointer;
+}
+
+tr {
     border-bottom: 1px solid white;
 }
 
@@ -115,14 +128,12 @@ td {
     /* border: 2px solid red; */
 }
 
-/* B O D Y ============================================= */
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* border: 2px solid black; */
+th img {
+    cursor: pointer;
 }
 
+/* B O D Y ============================================= */
+/* ===================================================== */
 .my-content {
     display: flex;
     flex-direction: column;
@@ -131,13 +142,13 @@ td {
     /* border: 2px solid black; */
 }
 
+/* CARD ----------------------------- */
 .card {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    margin: 20px;
+    align-items: center;    
+    margin: 20px 0;
     padding: 0 80px;
     color: white;
     background: rgba(0, 0, 0, 0.3);
@@ -146,58 +157,42 @@ td {
     /* border: 2px solid grey; */
 }
 
-.card a {
-    color: white;
-    /* border: 2px solid red; */
-}
-
-.card a:hover {
-    font-weight: 600;
-}
-
 .heart {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
 }
 
-.heart-svg {
+.heart img {
     width: 24px;
     height: 24px;
     cursor: pointer;
     /* border: 2px solid red; */
 }
 
-.heart-svg:hover {
-    width: 26px;
-    height: 26px;
+.heart img:hover {
+    transform: scale(1.07);
 }
 
 .card h1 {
     text-align: center;
-    font-size: 40px;
-    margin: 20px 0 10px 0;
-    /* border: 2px solid red; */
+    font-size: 36px;
+    line-height: 40px;
+    padding: 6px 0;
+    border: 1px solid red;
 }
 
-.card img {
-    width: 100%;
-    margin: 0 auto;
-    /* border: 2px solid red; */
+.icon-svg img {
+    width: 100px;
+    border: 1px solid red;
 }
 
 .temperature {
-    font-size: 50px;
+    font-size: 40px;
+    line-height: 44px;
     font-weight: 900;
     text-align: center;
-    /* border: 2px solid red; */
-}
-
-.summary {
-    margin: 0;
-    font-size: 30px;
-    text-align: center;
-    /* border: 2px solid red; */
+    border: 1px solid red;
 }
 
 hr {
@@ -220,30 +215,21 @@ hr {
     /* border: 2px solid grey; */
 }
 
-.bookmark {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+.reset-location {
+    color: red;
 }
 
-/* .last-found {
-    border-radius: 20px;
+.reset-location p {
+    cursor: pointer;
+}
+
+/* HiSTORY ============================================= */
+/* ===================================================== */
+/* .history {
+    border: 2px solid red;
 } */
 
-.history-head:hover {
-    background: none;
-}
-
-.down-svg {
-    padding: 4px;
-}
-
-.down-svg:hover {
-    background: rgba(0, 0, 0, 0.5);
-}
-
-
+/* table settings from favorite */
 
 
 @media(max-width: 1040px) {

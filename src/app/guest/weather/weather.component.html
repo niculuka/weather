@@ -33,7 +33,7 @@
                                 <td> {{item.currentCity}} </td>
                                 <td> {{item.temperature | number: "1.0-0"}}° C </td>
                                 <td (click)="removeFavoriteCity(item)">
-                                    <img  src="/assets/svgs/x-lg-white.svg" alt="close">
+                                    <img src="/assets/svgs/x-lg-white.svg" alt="close">
                                 </td>
                             </tr>
                         </tbody>
@@ -46,86 +46,72 @@
 
     <!-- B O D Y ========================================================================================= -->
     <div class="my-content">
-        <div class="content">
 
-            <!-- WAINTING . . . ------------------------------------------------------------------ -->
-            <div class="waiting">
-                <h1 style="color: white" *ngIf="!myWeather1.currentCity">Waiting...</h1>
+        <!-- WAINTING... --------------------------------------------------------------------- -->
+        <div class="waiting">
+            <h1 style="color: white" *ngIf="!myWeather1.currentCity">Waiting...</h1>
+        </div>
+
+        <!-- C A R D ------------------------------------------------------------------------- -->
+        <div class="card" *ngIf="myWeather1.currentCity">
+
+            <h1>{{myWeather1.currentCity}}</h1>
+
+            <div class="heart" (click)="setFavorite(myWeather1)">
+                <img [src]="myWeather1.favorite ? '/assets/svgs/heart-fill-red.svg' : '/assets/svgs/heart-white.svg'"
+                    [alt]="'icon'">
             </div>
 
-            <!-- C A R D ------------------------------------------------------------------------- -->
-            <div class="card" *ngIf="myWeather1.currentCity">
-                <div>
-                    <h1>{{myWeather1.currentCity}}</h1>
+            <p class="temperature">
+                {{myWeather1.temperature | number: "1.0-0"}}° C
+            </p>
 
-                    <div class="heart" (click)="setFavorite(myWeather1)">
-                        <img class="heart-svg" src="/assets/svgs/heart-fill-red.svg" alt="heart-fill-red.svg"
-                            *ngIf="myWeather1.favorite">
-                        <img class="heart-svg" src="/assets/svgs/heart-white.svg" alt="heart-white.svg"
-                            *ngIf="!myWeather1.favorite">
-                    </div>
+            <p>Feels like: {{myWeather1.feelsLike | number: "1.0-0"}}° C</p>
 
-                    <div class="temperature">
-                        {{myWeather1.temperature | number: "1.0-0"}}° C
-                    </div>
-                    <p>Feels like: {{myWeather1.feelsLike | number: "1.0-0"}}° C</p>
-                    <img src="https://openweathermap.org/img/wn/{{myWeather1.icon}}@2x.png" alt="icon">
-                    <p class="summary">{{myWeather1.summary}}</p>
-                </div>
+            <div class="icon-svg">
+                <img src="https://openweathermap.org/img/wn/{{myWeather1.icon}}@2x.png" alt="icon">
+            </div>
 
+            <hr>
+
+            <p>Presure: {{myWeather1.pressure * 0.750061683 | number: "1.0-0"}} mmHg</p>
+            <p>Humidity: {{myWeather1.humidity}} %</p>
+            <p>
+                Max/Min: {{myWeather1.tempMax | number: "1.0-0"}}° /
+                {{myWeather1.tempMin | number: "1.0-0"}}° C
+            </p>
+
+            <div class="reset-location" *ngIf="isCurrentCity()">
                 <hr>
-
-                <div class="details">
-                    <p>Presure: {{myWeather1.pressure * 0.750061683 | number: "1.0-0"}} mmHg</p>
-                    <p>Humidity: {{myWeather1.humidity}} %</p>
-                    <p>
-                        Max/Min: {{myWeather1.tempMax | number: "1.0-0"}}° / {{myWeather1.tempMin | number: "1.0-0"}}° C
-                    </p>
-                </div>
-
-                <p *ngIf="isCurrentCity()" (click)="resetCurrentLocation()">Reset Current Location</p>
-            </div>
-
-
-            <!-- HISTORY -------------------------------------------------------------------------- -->
-            <div class="bookmark" *ngIf="myWeather1.currentCity">
-
-                <table>
-                    <thead>
-                        <tr class="history-head">
-                            <th colspan="5" style="text-align: left;">History</th>
-                            <th style="text-align: right;">
-                                <img class="close-svg down-svg" src="/assets/svgs/x-lg-white.svg" alt="x-lg-white"
-                                    (click)="clearLastFound()">
-                            </th>
-                        </tr>
-                        <tr *ngIf="lastFounds.length<=0">
-                            <th colspan="8"> - - - empty list - - -</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of lastFounds;" (click)="getLastFound(item)">
-                            <td>
-                                {{item.currentCity}}
-                            </td>
-                            <td>
-                                {{item.temperature | number: "1.0-0"}}° C
-                            </td>
-                            <td>
-                                {{item.summary}}
-                            </td>
-                            <td>
-                                {{item.humidity}}%
-                            </td>
-                            <td>
-                                {{item.pressure * 0.750061683 | number: "1.0-0"}} mmHg
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
+                <p (click)="resetCurrentLocation()">Reset Location</p>
             </div>
         </div>
 
+
+        <!-- HISTORY -------------------------------------------------------------------------- -->
+        <div class="history" *ngIf="myWeather1.currentCity">
+
+            <table>
+                <thead *ngIf="lastFounds.length>0">
+                    <tr>
+                        <th colspan="4" style="text-align: left;">History</th>
+                        <th style="text-align: right;" (click)="clearLastFound()">
+                            <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of lastFounds;" (click)="getLastFound(item)">
+                        <td> {{item.currentCity}} </td>
+                        <td> {{item.temperature | number: "1.0-0"}}° C </td>
+                        <td> {{item.summary}} </td>
+                        <td> {{item.humidity}}% </td>
+                        <td> {{item.pressure * 0.750061683 | number: "1.0-0"}} mmHg </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
+
 </div>
