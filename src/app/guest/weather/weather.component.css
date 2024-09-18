@@ -2,7 +2,7 @@
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-position: center; */
+    background-position: center;
     /* border: 2px solid black; */
 }
 
@@ -69,8 +69,8 @@
 .home a,
 .favorites a {
     padding: 16px 30px;
-    color: rgb(255, 255, 255);
     font-size: 18px;
+    color: rgb(255, 255, 255);
     cursor: pointer;
     border: none;
     border-radius: 6px;
@@ -85,6 +85,7 @@
 .dropdown-fav {
     position: absolute;
     display: none;
+    right: 0;
     z-index: 1;
 }
 
@@ -97,7 +98,7 @@ table {
     color: white;
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
     border-collapse: collapse;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 thead tr {
@@ -122,8 +123,9 @@ tr:hover {
 
 th,
 td {
-    padding: 16px;
-    font-size: 20px;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
     white-space: nowrap;
     /* border: 2px solid red; */
 }
@@ -147,13 +149,13 @@ th img {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;    
+    align-items: center;
+    max-width: 340px;
     margin: 20px 0;
-    padding: 0 80px;
+    padding: 20px 80px;
     color: white;
     background: rgba(0, 0, 0, 0.3);
     box-shadow: 0px 6px 10px 0px rgba(62, 62, 62, 0.2);
-    border-radius: 20px;
     /* border: 2px solid grey; */
 }
 
@@ -175,28 +177,34 @@ th img {
 }
 
 .card h1 {
-    text-align: center;
+    margin: 6px 0;
     font-size: 36px;
     line-height: 40px;
-    padding: 6px 0;
-    border: 1px solid red;
+    text-align: center;
+    /* border: 1px solid red; */
 }
 
-.icon-svg img {
-    width: 100px;
-    border: 1px solid red;
+.card p {
+    margin: 0;
+    /* border: 1px solid red; */
 }
 
 .temperature {
     font-size: 40px;
-    line-height: 44px;
+    line-height: 40px;
     font-weight: 900;
     text-align: center;
-    border: 1px solid red;
+    /* border: 1px solid red; */
+}
+
+.icon-svg img {
+    width: 120px;
+    /* border: 1px solid red; */
 }
 
 hr {
     width: 100%;
+    margin: 14px 0;
     color: white;
 }
 
@@ -223,6 +231,10 @@ hr {
     cursor: pointer;
 }
 
+.reset-location p:hover {
+    transform: scale(1.02);
+}
+
 /* HiSTORY ============================================= */
 /* ===================================================== */
 /* .history {
@@ -232,87 +244,106 @@ hr {
 /* table settings from favorite */
 
 
-@media(max-width: 1040px) {
-    .search input {
-        font-size: 15px;
-    }
+@media(max-width: 1020px) {
 
-    button {
-        font-size: 16px;
-    }
-
-    .dropdown-fav {
-        top: 48px;
-    }
-
-    .card {
-        padding: 0 60px;
-    }
-
-    .card h1 {
-        font-size: 36px;
-    }
-
-    .temperature {
-        font-size: 46px;
-    }
-
-    .summary {
-        font-size: 26px;
-    }
-
-    .details {
-        font-size: 20px;
-    }
-
-    .bookmark {
-        flex-direction: column;
-    }
-
-    .last-found {
-        margin-right: 0;
-        margin-bottom: 20px;
+    .home a,
+    .favorites a {
+        padding: 14px 26px;
+        font-size: 17px;
     }
 
     th,
     td {
-        font-size: 18px;
-        padding: 4px 10px;
+        padding: 11px;
+        font-size: 17px;
+    }
+
+    .card h1 {
+        margin: 4px 0;
+        font-size: 32px;
+        line-height: 36px;
+    }
+
+    .temperature {
+        font-size: 36px;
+        line-height: 36px;
+    }
+
+    .icon-svg img {
+        width: 100px;
+    }
+}
+
+@media(max-width: 766px) {
+    .search {
+        width: 100%;
+    }
+
+    .search form {
+        padding: 12px 16px;
+    }
+
+    .search input {
+        font-size: 16px;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .card {
+        margin: 16px 0;
     }
 }
 
 @media(max-width: 550px) {
-    button {
-        font-size: 14px;
+
+    .home a,
+    .favorites a {
+        padding: 12px 16px;
+        font-size: 16px;
     }
 
-    .search input {
-        font-size: 14px;
-    }
-
-    .card {
-        padding: 0 40px;
-    }
-
-    .card h1 {
-        font-size: 32px;
-    }
-
-    .temperature {
-        font-size: 42px;
-    }
-
-    .summary {
-        font-size: 22px;
-    }
-
-    .details {
-        font-size: 18px;
+    .search form {
+        padding: 10px 14px;
     }
 
     th,
     td {
-        font-size: 16px;
-        padding: 4px;
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    .card {
+        margin: 14px 0;
+        padding: 20px 60px;
+    }
+
+    .card h1 {
+        margin: 2px 0;
+        font-size: 28px;
+        line-height: 32px;
+    }
+
+    .temperature {
+        font-size: 30px;
+        line-height: 30px;
+    }
+
+    .icon-svg img {
+        width: 80px;
+    }
+
+    .history {
+        width: 100%;
+        overflow: scroll;
+    }
+}
+
+@media(max-width: 350px) {
+    .card {
+        padding: 20px 40px;
     }
 }
