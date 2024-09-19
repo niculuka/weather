@@ -61,11 +61,6 @@
     display: inline-block;
 }
 
-.home,
-.favorites {
-    margin: 0 14px;
-}
-
 .home a,
 .favorites a {
     padding: 16px 30px;
@@ -264,8 +259,15 @@ hr {
     border: 2px solid red;
 } */
 
-/* table settings from favorite */
+/* TABLE SETTINGS - FROM FAVORITES */
 
+@media(max-width: 1530px) {
+
+    .home,
+    .favorites {
+        margin: 0 14px;
+    }
+}
 
 @media(max-width: 1020px) {
 

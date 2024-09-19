@@ -1,52 +1,43 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
+.my-container {
+    height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     /* border: 2px solid black; */
 }
 
-.back {
+/* T O O L B A R ======================================= */
+/* ===================================================== */
+.toolbar-container {
     width: 100%;
-    max-width: 1500px;
-}
-
-button {
-    float: left;
-    cursor: pointer;
-    color: rgb(255, 255, 255);
-    font-size: 18px;
-    margin: 10px;
-    padding: 10px 30px;
+    height: 10%;
     background: rgba(0, 0, 0, 0.2);
-    border: none;
-    border-radius: 6px;
 }
 
-button:hover {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.content {
+.toolbar-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: white;
-    /* border: 2px solid black; */
+    width: 100%;
+    height: 100%;
+    max-width: 1500px;
+    margin: auto;
+    /* border: 2px solid red; */
+}
+
+/* HOME => FAVORITES --------------- */
+
+/* SEARCH ------------------------- */
+.search {
+    width: 500px;
 }
 
 .search form {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 0 12px;
-    height: 100%;
+    padding: 12px 16px;
     border: none;
     border-radius: 50px;
     background: white;
@@ -56,85 +47,286 @@ button:hover {
     font-size: 16px;
     width: 100%;
     outline: none;
-    background: none;
     border: none;
+    background: none;
 }
 
-.city {
-    padding: 10px 30px;
-    border-radius: 10px;
+.search img {
+    cursor: pointer;
+}
+
+/* FAVORITES ------------------------- */
+.favorites {
+    position: relative;
+    display: inline-block;
+}
+
+.home a,
+.favorites a {
+    padding: 16px 30px;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
     background: rgba(0, 0, 0, 0.3);
 }
 
+.home a:hover,
+.favorites a:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-fav {
+    position: absolute;
+    display: none;
+    right: 0;
+    z-index: 1;
+}
+
+.favorites:hover .dropdown-fav {
+    display: block;
+}
+
+/* TABLE ----------------------------- */
+table {
+    color: white;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+thead tr {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+tr {
+    border-bottom: 1px solid white;
+}
+
+tr:last-child {
+    border: none;
+}
+
+tr:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+th,
+td {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    white-space: nowrap;
+    transition: 0.3s;
+    /* border: 2px solid red; */
+}
+
+th img {
+    cursor: pointer;
+}
+
+th img:hover,
+td img:hover {
+    transform: scale(1.15);
+}
+
+/* B O D Y ============================================= */
+/* ===================================================== */
+.my-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    padding-bottom: 150px;
+    /* border: 2px solid black; */
+}
+
+.city h1 {
+    width: 100%;
+    margin: 60px 0;
+    font-size: 40px;
+    line-height: 44px;
+    text-align: center;
+    color: white;
+    /* border: 1px solid red; */
+}
+
+/* CARDS ----------------------------- */
 .cards {
     display: flex;
     flex-direction: row;
-    margin-top: 100px;
-    width: 98vw;
-    max-width: 1480px;
+    align-items: center;
     overflow-x: scroll;
-    /* border: 2px solid black; */
+    gap: 20px;
+    width: 100%;
+    /* border: 2px solid red; */
 }
 
 .card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    min-width: 220px;
+    padding: 14px;
     color: white;
-    margin-right: 20px;
-    padding: 10px;
-    border-radius: 10px;
-    /* border: 2px solid black; */
     background: rgba(0, 0, 0, 0.6);
 }
 
-.time {
-    width: 200px;
-    text-align: center;
-}
-
 .temperature {
-    font-size: 44px;
+    font-size: 40px;
+    font-weight: 600;
     text-align: center;
 }
 
-.main {
+.icon-svg {
     text-align: center;
     /* border: 2px solid black; */
 }
 
-.main img {
-    margin: 0;
-    padding: 0;
+.icon-svg img {
+    width: 80px;
     /* border: 2px solid black; */
 }
 
-.main p {
+.icon-svg p {
     margin: 0;
     padding: 0;
     font-size: 24px;
+    line-height: 28px;
     /* border: 2px solid black; */
 }
 
+hr {
+    width: 100%;
+    margin: 16px 0;
+    color: white;
+}
+
 .details {
-    margin-top: 20px;
-    font-size: 20px;
+    width: 100%;
+    /* border: 2px solid black; */
 }
 
-.max-min {
-    margin-top: 30px;
+@media(max-width: 1530px) {
+
+    .home,
+    .favorites {
+        margin: 0 14px;
+    }
 }
 
-@media(max-width: 1040px) {
-    .cards {
-        margin-top: 50px;
+@media(max-width: 1020px) {
+
+    .home a,
+    .favorites a {
+        padding: 14px 26px;
+        font-size: 17px;
+    }
+
+    th,
+    td {
+        padding: 11px;
+        font-size: 17px;
+    }
+
+    .card {
+        min-width: 200px;
+    }
+
+    .card h1 {
+        margin: 4px 0;
+        font-size: 32px;
+        line-height: 36px;
+    }
+
+    .temperature {
+        font-size: 36px;
+        line-height: 36px;
+    }
+
+    .icon-svg img {
+        width: 70px;
+    }
+}
+
+@media(max-width: 766px) {
+    .search {
+        width: 100%;
+    }
+
+    .search form {
+        padding: 12px 16px;
+    }
+
+    .search input {
+        font-size: 16px;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .card {
+        margin: 16px 0;
     }
 }
 
 @media(max-width: 550px) {
-    .cards {
-        margin-top: 10px;
+
+    .home a,
+    .favorites a {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+
+    .search form {
+        padding: 10px 14px;
+    }
+
+    th,
+    td {
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    .card {
+        min-width: 180px;
+        margin: 14px 0;
+        padding: 20px 60px;
+    }
+
+    .card h1 {
+        margin: 2px 0;
+        font-size: 28px;
+        line-height: 32px;
+    }
+
+    .temperature {
+        font-size: 30px;
+        line-height: 30px;
+    }
+
+    .icon-svg img {
+        width: 60px;
+    }
+
+    .history {
+        width: 100%;
+        overflow: scroll;
+    }
+}
+
+@media(max-width: 350px) {
+    .card {
+        padding: 20px 40px;
     }
 }

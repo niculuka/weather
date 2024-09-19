@@ -1,48 +1,87 @@
-<div class="container" [ngStyle]="{'background-image': 'url(/' + myWeather5.background + ')'}">
+<div class="my-container" [ngStyle]="{'background-image': 'url(/' + myWeather5.background + ')'}">
 
-    <div class="back">
-        <button routerLink="/">Back</button>
+    <!-- T O O L B A R =================================================================================== -->
+    <div class="toolbar-container">
+        <div class="toolbar-content">
+
+            <!-- HOME ------------------------------------------------------------------------ -->
+            <div class="home">
+                <a routerLink="/">Home</a>
+            </div>
+
+            <!-- SEARCH BAR ------------------------------------------------------------------ -->
+            <div class="search">
+                <form #form="ngForm" (submit)="search()">
+                    <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
+                    <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="search()">
+                </form>
+            </div>
+
+            <!-- FAVORITES ------------------------------------------------------------------- -->
+            <div class="favorites">
+                <a>Favs</a>
+                <div class="dropdown-fav">
+                    <table>
+                        <thead>
+                            <tr *ngIf="favorites.length<=0">
+                                <td colspan="4"> - - - empty list - - -</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of favorites; index as ind" (click)="getFavoriteCity(item)">
+                                <td> {{ind+1}} </td>
+                                <td> {{item.currentCity}} </td>
+                                <td> {{item.temperature | number: "1.0-0"}}° C </td>
+                                <td (click)="removeFavoriteCity(item)">
+                                    <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="content">
+    <!-- B O D Y ========================================================================================= -->
+    <div class="my-content">
 
-        <div class="search">
-            <form #form="ngForm" (submit)="search()">
-                <input type="text" placeholder="Search City" name="city" [(ngModel)]="searchCity">
-                <img src="/assets/svgs/search.svg" alt="search.jpg" (click)="search()">
-            </form>
-        </div>
-
+        <!-- WAINTING... --------------------------------------------------------------------- -->
         <div class="waiting">
             <h1 style="color: white" *ngIf="!myWeather5.currentCity">Waiting...</h1>
         </div>
 
-        <h1 class="city" *ngIf="myWeather5.currentCity">{{myWeather5.currentCity}}</h1>
+        <div class="city">
+            <h1 *ngIf="myWeather5.currentCity">{{myWeather5.currentCity}}</h1>
+        </div>
 
+        <!-- C A R D S ----------------------------------------------------------------------- -->
         <div class="cards" *ngIf="myWeather5.currentCity">
 
             <div class="card" *ngFor="let card of myWeather5.list">
 
-                <div class="time">{{card.dt_txt}}</div>
+                <p>{{card.dt_txt}}</p>
 
-                <div class="temperature">{{card.main?.temp | number: "1.0-0"}}° C</div>
-                <div class="main" *ngFor="let wth of card.weather">
-                    <img src="https://openweathermap.org/img/wn/{{wth.icon}}@2x.png" alt="icon">
-                    <p>{{wth.main}}</p>
+                <p class="temperature">{{card.main?.temp | number: "1.0-0"}}° C</p>
+
+                <div class="icon-svg">
+                    <img src="https://openweathermap.org/img/wn/{{card.weather[0].icon}}@2x.png" alt="icon">
+                    <p>{{card.weather[0].main}}</p>
                 </div>
 
+                <hr>
+
                 <div class="details">
-                    <div>Pressure: {{card.main?.pressure * 0.750061683 | number: "1.0-0"}} mmHg</div>
-                    <div>Humidity: {{card.main?.humidity}} %</div>
-                    <div class="max-min">
-                        <div>
-                            Feels like: {{card.main?.feels_like | number: "1.0-0"}}° C
-                        </div>
-                        <div>
-                            Max/Min: {{card.main?.temp_max | number: "1.0-0"}}° / {{card.main?.temp_min | number:
-                            "1.0-0"}}° C
-                        </div>
-                    </div>
+                    <p>Pressure: {{card.main?.pressure * 0.750061683 | number: "1.0-0"}} mmHg</p>
+
+                    <p>Humidity: {{card.main?.humidity}} %</p>
+
+                    <p> Feels like: {{card.main?.feels_like | number: "1.0-0"}}° C </p>
+                    <p>
+                        Max/Min: {{card.main?.temp_max | number: "1.0-0"}}°
+                        / {{card.main?.temp_min | number: "1.0-0"}}° C
+                    </p>
                 </div>
 
             </div>
