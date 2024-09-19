@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //
@@ -28,6 +29,7 @@ import { WeatherFiveComponent } from './guest/weather-five/weather-five.componen
     FormsModule,
     MatMenuModule,
     MatButtonModule,
+    MatTooltipModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
   ],

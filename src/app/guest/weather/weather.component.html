@@ -6,7 +6,7 @@
 
             <!-- HOME ------------------------------------------------------------------------ -->
             <div class="home">
-                <a routerLink="/">Back</a>
+                <a routerLink="/">Home</a>
             </div>
 
             <!-- SEARCH BAR ------------------------------------------------------------------ -->
@@ -24,7 +24,7 @@
                     <table>
                         <thead>
                             <tr *ngIf="favorites.length<=0">
-                                <th colspan="4"> - - - empty list - - -</th>
+                                <td colspan="4"> - - - empty list - - -</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,7 +57,12 @@
 
             <h1>{{myWeather1.currentCity}}</h1>
 
-            <div class="heart" (click)="setFavorite(myWeather1)">
+            <div class="refresh" matTooltip="Refresh current location!" *ngIf="isCurrentCity()"
+                (click)="resetCurrentLocation()">
+                <img src="/assets/svgs/refresh.svg" alt="refresh">
+            </div>
+
+            <div class="heart" matTooltip="Set as favorite!" (click)="setFavorite(myWeather1)">
                 <img [src]="myWeather1.favorite ? '/assets/svgs/heart-fill-red.svg' : '/assets/svgs/heart-white.svg'"
                     [alt]="'icon'">
             </div>
@@ -80,11 +85,6 @@
                 Max/Min: {{myWeather1.tempMax | number: "1.0-0"}}° /
                 {{myWeather1.tempMin | number: "1.0-0"}}° C
             </p>
-
-            <div class="reset-location" *ngIf="isCurrentCity()">
-                <hr>
-                <p (click)="resetCurrentLocation()">Reset Location</p>
-            </div>
         </div>
 
 

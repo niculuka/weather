@@ -127,11 +127,17 @@ td {
     padding: 12px;
     font-size: 18px;
     white-space: nowrap;
+    transition: 0.3s;
     /* border: 2px solid red; */
 }
 
 th img {
     cursor: pointer;
+}
+
+th img:hover,
+td img:hover {
+    transform: scale(1.15);
 }
 
 /* B O D Y ============================================= */
@@ -159,6 +165,23 @@ th img {
     /* border: 2px solid grey; */
 }
 
+.refresh {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+.refresh img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    /* border: 2px solid red; */
+}
+
+.refresh img:hover {
+    transform: scale(1.08);
+}
+
 .heart {
     position: absolute;
     top: 12px;
@@ -173,7 +196,7 @@ th img {
 }
 
 .heart img:hover {
-    transform: scale(1.07);
+    transform: scale(1.08);
 }
 
 .card h1 {
