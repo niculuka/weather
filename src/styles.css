@@ -38,6 +38,17 @@ a {
     /* border: 1px solid red; */
 }
 
+
+/* FAVORITES BUTTON */
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+    border-radius: 0 !important;
+    background: none !important;
+}
+
+.mat-mdc-menu-content {
+    padding: 0 !important;
+}
+
 @media(max-width: 1530px) {
     .my-content {
         width: 1200px;

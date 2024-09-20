@@ -17,8 +17,8 @@
                 </form>
             </div>
 
-            <!-- FAVORITES ------------------------------------------------------------------- -->
-            <div class="favorites">
+            <!-- FAVORITES - HOVER ----------------------------------------------------------- -->
+            <div class="favorites desktop">
                 <a>Favs</a>
                 <div class="dropdown-fav">
                     <table>
@@ -41,6 +41,32 @@
                 </div>
             </div>
 
+            <!-- FAVORITES - MENU BUTTON ----------------------------------------------------- -->
+            <div class="favorites mobile">
+                <a [matMenuTriggerFor]="beforeMenu">Favs</a>
+                <mat-menu #beforeMenu="matMenu" xPosition="before">
+                    <a>
+                        <table>
+                            <thead>
+                                <tr *ngIf="favorites.length<=0">
+                                    <td colspan="4"> - - - empty list - - -</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of favorites; index as ind" (click)="getFavoriteCity(item)">
+                                    <td> {{ind+1}} </td>
+                                    <td> {{item.currentCity}} </td>
+                                    <td> {{item.temperature | number: "1.0-0"}}° C </td>
+                                    <td (click)="removeFavoriteCity(item)">
+                                        <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </a>
+                </mat-menu>
+            </div>
+
         </div>
     </div>
 
@@ -53,7 +79,7 @@
         </div>
 
         <div class="city">
-            <h1 *ngIf="myWeather5.currentCity">{{myWeather5.currentCity}}</h1>
+            <h1>{{myWeather5.currentCity}}</h1>
         </div>
 
         <!-- C A R D S ----------------------------------------------------------------------- -->
