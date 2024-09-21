@@ -93,25 +93,27 @@
         <!-- HISTORY -------------------------------------------------------------------------- -->
         <div class="history" *ngIf="myWeather1.currentCity">
 
-            <table>
-                <thead *ngIf="lastFounds.length>0">
-                    <tr>
-                        <th colspan="4" style="text-align: left;">History</th>
-                        <th style="text-align: right;" (click)="clearLastFound()">
-                            <img src="/assets/svgs/x-lg-white.svg" alt="close">
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of lastFounds;" (click)="getLastFound(item)">
-                        <td> {{item.currentCity}} </td>
-                        <td> {{item.temperature | number: "1.0-0"}}° C </td>
-                        <td> {{item.summary}} </td>
-                        <td> {{item.humidity}}% </td>
-                        <td> {{item.pressure * 0.750061683 | number: "1.0-0"}} mmHg </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead *ngIf="lastFounds.length>0">
+                        <tr>
+                            <th colspan="4" style="text-align: left;">History</th>
+                            <th style="text-align: right;" (click)="clearLastFound()">
+                                <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lastFounds;" (click)="getLastFound(item)">
+                            <td> {{item.currentCity}} </td>
+                            <td> {{item.temperature | number: "1.0-0"}}° C </td>
+                            <td> {{item.summary}} </td>
+                            <td> {{item.humidity}}% </td>
+                            <td> {{item.pressure * 0.750061683 | number: "1.0-0"}} mmHg </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </div>

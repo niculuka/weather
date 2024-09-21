@@ -298,6 +298,10 @@ hr {
         font-size: 15px;
     }
 
+    .search img {
+        width: 15px;
+    }
+
     th,
     td {
         padding: 11px;
@@ -327,8 +331,17 @@ hr {
         width: 80px;
     }
 
+    hr {
+        margin: 10px 0;
+    }
+
+    .table-container {
+        overflow-y: scroll;
+    }
+
     .history {
         max-width: 100%;
+        margin-bottom: 14px;
     }
 }
 
@@ -351,6 +364,10 @@ hr {
 
     .search input {
         font-size: 14px;
+    }
+
+    .search img {
+        width: 14px;
     }
 
     th,
@@ -376,6 +393,8 @@ hr {
     .icon-svg img {
         width: 60px;
     }
-}
 
-@media(max-width: 350px) {}
+    hr {
+        margin: 6px 0;
+    }
+}
