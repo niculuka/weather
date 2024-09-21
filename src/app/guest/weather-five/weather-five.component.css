@@ -276,6 +276,7 @@ hr {
     }
 
     .cards-container {
+        margin-bottom: 14px;
         overflow-y: scroll;
     }
 
