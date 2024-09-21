@@ -41,6 +41,7 @@ a {
 
 /* FAVORITES BUTTON */
 .mat-mdc-menu-panel.mat-mdc-menu-panel {
+    max-width: fit-content !important;
     border-radius: 0 !important;
     background: none !important;
 }
