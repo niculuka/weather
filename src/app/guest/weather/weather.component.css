@@ -143,8 +143,10 @@ td img:hover {
 .my-content {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     height: 90%;
+    padding-bottom: 4%;
     /* border: 2px solid black; */
 }
 
