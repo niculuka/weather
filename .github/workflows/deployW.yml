@@ -1,0 +1,26 @@
+name: Remote update execution
+
+on:
+  push:
+    branches: [ "master" ]
+      
+jobs:
+  build:
+  
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd ${{ secrets.WORK_DIR }}
+          git checkout ${{ secrets.BRANCH }}
+          git pull
+          npm i
+          npm run build-prod
+          pm2 restart weather
