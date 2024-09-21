@@ -162,7 +162,7 @@ td img:hover {
 .cards {
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
+    overflow: scroll;
     gap: 20px;
     width: 100%;
     border: 2px solid red;

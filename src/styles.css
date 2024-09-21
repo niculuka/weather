@@ -22,11 +22,11 @@ body {
 }
 
 .my-content {
-    display: flex;
-    flex-direction: column;
     margin: auto;
-    width: 1500px;
+    width: 100%;
+    max-width: 1500px;
     min-height: 70vh;
+    padding: 0 14px;
     cursor: default;
     /* border: 2px solid black; */
 }
@@ -49,24 +49,8 @@ a {
     padding: 0 !important;
 }
 
-@media(max-width: 1530px) {
-    .my-content {
-        width: 1200px;
-    }
-}
 
-@media(max-width: 1260px) {
-    .my-content {
-        width: 1000px;
-    }
-}
 
-@media(max-width: 1020px) {
-    .my-content {
-        width: 100%;
-        padding: 0 14px;
-    }
-}
 
 html,
 body {
