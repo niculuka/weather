@@ -136,16 +136,27 @@ td {
     padding: 14px;
     font-size: 18px;
     white-space: nowrap;
-    transition: 0.3s;
-    /* border: 2px solid red; */
+    /* border: 1px solid red; */
 }
 
-th img {
+.btn-cont {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    transition: 0.2s;
+    /* border: 1px solid red; */
+}
+
+.btn-cont img {
+    width: 16px;
     cursor: pointer;
+    /* border: 1px solid pink; */
 }
 
-th img:hover,
-td img:hover {
+.btn-cont img:hover {
     transform: scale(1.15);
 }
 
@@ -308,6 +319,10 @@ hr {
         font-size: 17px;
     }
 
+    .btn-cont img {
+        width: 15px;
+    }
+
     .my-content {
         overflow-y: scroll;
     }
@@ -374,6 +389,10 @@ hr {
     td {
         padding: 6px;
         font-size: 14px;
+    }
+
+    .btn-cont img {
+        width: 14px;
     }
 
     .card {

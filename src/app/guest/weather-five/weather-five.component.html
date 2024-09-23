@@ -33,8 +33,11 @@
                                     <td> {{ind+1}} </td>
                                     <td> {{item.currentCity}} </td>
                                     <td> {{item.temperature | number: "1.0-0"}}° C </td>
-                                    <td (click)="removeFavoriteCity(item)">
-                                        <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                                    <td>
+                                        <div class="btn-cont">
+                                            <img src="/assets/svgs/x-lg-white.svg" alt="close"
+                                                (click)="removeFavoriteCity(item)">
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>

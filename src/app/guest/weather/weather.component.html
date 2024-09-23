@@ -33,8 +33,11 @@
                                     <td> {{ind+1}} </td>
                                     <td> {{item.currentCity}} </td>
                                     <td> {{item.temperature | number: "1.0-0"}}° C </td>
-                                    <td (click)="removeFavoriteCity(item)">
-                                        <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                                    <td>
+                                        <div class="btn-cont">
+                                            <img src="/assets/svgs/x-lg-white.svg" alt="close"
+                                                (click)="removeFavoriteCity(item)">
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -98,8 +101,10 @@
                     <thead *ngIf="lastFounds.length>0">
                         <tr>
                             <th colspan="4" style="text-align: left;">History</th>
-                            <th style="text-align: right;" (click)="clearLastFound()">
-                                <img src="/assets/svgs/x-lg-white.svg" alt="close">
+                            <th>
+                                <div class="btn-cont">
+                                    <img src="/assets/svgs/x-lg-white.svg" alt="close" (click)="clearLastFound()">
+                                </div>
                             </th>
                         </tr>
                     </thead>
