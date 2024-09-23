@@ -63,7 +63,6 @@ export class WeatherFiveComponent implements OnInit, OnDestroy {
   get5DaysWeather(city: string) {
     this.sub3 = this.weatherService.get5DaysWeatherService(city).subscribe({
       next: (data: any) => {
-        // console.log(data.list[0].weather[0].icon)
         this.myWeather5.currentCity = data.city.name;
         this.myWeather5.list = data.list;
         this.myWeather5.icon = data.list[0].weather[0].icon;

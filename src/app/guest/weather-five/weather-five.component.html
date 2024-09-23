@@ -54,12 +54,13 @@
             <h1 style="color: white" *ngIf="!myWeather5.currentCity">Waiting...</h1>
         </div>
 
-        <div class="city">
-            <h1>{{myWeather5.currentCity}}</h1>
-        </div>
-
         <!-- C A R D S ----------------------------------------------------------------------- -->
         <div class="cards-container">
+
+            <div class="city">
+                <h1>{{myWeather5.currentCity}}</h1>
+            </div>
+
             <div class="cards" *ngIf="myWeather5.currentCity">
 
                 <div class="card" *ngFor="let card of myWeather5.list">
